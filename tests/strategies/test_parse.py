@@ -1,33 +1,59 @@
-"""Tests the demo parse strategy for JSON."""
+"""Test parse strategies."""
+from pathlib import Path
 from typing import TYPE_CHECKING
 
+# pylint: disable=too-many-locals
+# pylint: disable=C0412
+
 if TYPE_CHECKING:
-    from pathlib import Path
+    from oteapi.interfaces import IParseStrategy
 
-    from oteapi.models import SessionUpdate
-
-    from dlite_cuds.strategies.parse import SessionUpdateJSONParse
+    from dlite_cuds.strategies.parse import SessionUpdateCUDSParse
 
 
-def test_json(static_files: "Path") -> None:
-    """Test `application/jsonDEMO` parse strategy on local file."""
-    import json
+def test_cuds_parse(repo_dir: "Path") -> None:
+    """Test `application/cuds` parse strategy ."""
+    from oteapi.datacache import DataCache
+    from rdflib import Graph
+    from rdflib.compare import graph_diff
 
-    from dlite_cuds.strategies.parse import DemoJSONDataParseStrategy
+    from dlite_cuds.strategies.parse import CUDSParseStrategy
 
-    sample_file = static_files / "sample2.json"
-    assert sample_file.exists(), f"Test file not found at {sample_file} !"
+    ontologypath = repo_dir / "tests" / "testfiles" / "onto.ttl"
+    cudspath = repo_dir / "tests" / "testfiles" / "case.ttl"
 
     config = {
-        "downloadUrl": sample_file.as_uri(),
-        "mediaType": "application/jsonDEMO",
+        "downloadUrl": cudspath.as_uri(),
+        "mediaType": "application/CUDS",
+        "configuration": {
+            "ontologyUrl": ontologypath.as_uri(),
+        },
     }
-    parser_initialize: "SessionUpdate" = DemoJSONDataParseStrategy(config).initialize()
-    parser_get: "SessionUpdateJSONParse" = DemoJSONDataParseStrategy(config).get(
-        parser_initialize
+
+    # Create session an place collection in it
+    session = {}
+    # Should test triple in cache
+    cache = DataCache()
+    parser: "IParseStrategy" = CUDSParseStrategy(config)
+    session.update(parser.initialize())
+    # parsing of the input CUDS, graph stored in the cache and
+    # graph_cache_key stored in the session
+    parsed_data: "SessionUpdateCUDSParse" = parser.get(session)
+    # create rdf graph object from strategy
+    graph_from_strategy = Graph()
+    graph_from_strategy.parse(
+        data=cache.get(parsed_data["graph_cache_key"]), format="json-ld"
     )
 
-    test_data = json.loads(sample_file.read_text())
+    # Parse graph directly from the files for comparison
+    # Going through serialisation/deserialisation step required for type specification
+    graph = Graph()
+    graph.parse(ontologypath)
+    graph += graph.parse(cudspath)
+    ser_graph = graph.serialize(format="json-ld")
+    deser_graph = Graph()
+    deser_graph.parse(data=ser_graph, format="json-ld")
 
-    assert {**parser_initialize} == {}
-    assert parser_get.content == test_data
+    graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+    assert graph_comparison[1].serialize() == "\n"
+    assert graph_comparison[2].serialize() == "\n"
