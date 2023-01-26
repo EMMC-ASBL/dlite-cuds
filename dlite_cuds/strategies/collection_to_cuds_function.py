@@ -2,7 +2,6 @@
 from typing import TYPE_CHECKING, Optional
 
 import dlite
-
 from oteapi.datacache import DataCache
 from oteapi.models import AttrDict, DataCacheConfig, FunctionConfig, SessionUpdate
 from pydantic import Field
@@ -57,17 +56,11 @@ class SessionUpdateCUDSFunction(SessionUpdate):
     """Class for returning values when converting from Collection to CUDS."""
 
     cuds_cache_key: str = Field(
-        ...,
-        description="Key to CUDS represented as a serialized graph in datacache."
+        ..., description="Key to CUDS represented as a serialized graph in datacache."
     )
-    entity_collection_id: str = Field(
-        ...,
-        description="Entity collection id."
-    )
-    collection_id: str = Field(
-        ...,
-        description="Collection id."
-    )
+    entity_collection_id: str = Field(..., description="Entity collection id.")
+    collection_id: str = Field(..., description="Collection id.")
+
 
 @dataclass
 class CUDSFunctionStrategy:
@@ -81,13 +74,15 @@ class CUDSFunctionStrategy:
 
     function_config: CUDSFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
     def get(
         self, session: "Optional[Dict[str, Any]]" = None
-
     ) -> SessionUpdateCUDSFunction:
         """Parse CUDS.
         Arguments:
@@ -102,34 +97,40 @@ class CUDSFunctionStrategy:
         # Get the collection of the entity including the mapping
         if self.function_config.configuration.entity_collection_id is not None:
             try:
-                entity_coll = (
-                dlite.get_instance(self.function_config.configuration.entity_collection_id
-                ))
+                entity_coll = dlite.get_instance(
+                    self.function_config.configuration.entity_collection_id
+                )
             except dlite.DLiteError as error:
                 raise DLiteCUDSError(
-                        "Could not get entity collection! " + repr(error)) from error
+                    "Could not get entity collection! " + repr(error)
+                ) from error
         else:
             try:
-                entity_coll = _get_collection(session=session,
-                                            label="entity_collection_id")
+                entity_coll = _get_collection(
+                    session=session, label="entity_collection_id"
+                )
             except dlite.DLiteError as error:
-                raise DLiteCUDSError("Could not get entity collection from session! "
-                                        + repr(error)) from error
+                raise DLiteCUDSError(
+                    "Could not get entity collection from session! " + repr(error)
+                ) from error
 
         # Get the collection to convert to CUDS
         if self.function_config.configuration.collection_id is not None:
             try:
-                coll = (
-                dlite.get_instance(self.function_config.configuration.collection_id))
+                coll = dlite.get_instance(
+                    self.function_config.configuration.collection_id
+                )
             except dlite.DLiteError as error:
                 raise DLiteCUDSError(
-                        "Could not get collection! " + repr(error)) from error
+                    "Could not get collection! " + repr(error)
+                ) from error
         else:
             try:
                 coll = _get_collection(session, label="collection_id")
             except dlite.DLiteError as error:
-                raise DLiteCUDS("Could not get collection from session! "
-                + repr(error)) from error
+                raise DLiteCUDSError(
+                    "Could not get collection from session! " + repr(error)
+                ) from error
 
         # Get the (CUDS) relation to be considered
         relation = self.function_config.configuration.relation
@@ -141,9 +142,9 @@ class CUDSFunctionStrategy:
         graph_cuds = Graph()
 
         # Create triples
-        triples_list = create_cuds_from_collection(collection=coll,
-                                        entity_collection=entity_coll,
-                                        relation=relation)
+        triples_list = create_cuds_from_collection(
+            collection=coll, entity_collection=entity_coll, relation=relation
+        )
         # Populate graph with triples
         for triple in triples_list:
             graph_cuds.add(triple)

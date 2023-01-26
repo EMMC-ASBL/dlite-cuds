@@ -9,7 +9,7 @@ from oteapi.plugins import create_strategy
 from pydantic import AnyUrl, Field, FileUrl
 from pydantic.dataclasses import dataclass
 
-from cuds_dlite.utils.rdf import get_graph
+from dlite_cuds.utils.rdf import get_graph
 
 if TYPE_CHECKING:
     from typing import Any, Dict
@@ -63,11 +63,17 @@ class CUDSParseStrategy:
 
     parse_config: CUDSParseResourceConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
-    def get(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def get(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
 
         """Parse CUDS.
         Arguments:
@@ -99,7 +105,6 @@ class CUDSParseStrategy:
         # add ontology as graph to datacache
         ontograph = get_graph(cache[onto_key])
         onto_cache_key = cache.add(ontograph.serialize(format="json-ld"))
-
 
         # Make a graph with both cuds and ontology
         graph = get_graph(cache[cuds_key])

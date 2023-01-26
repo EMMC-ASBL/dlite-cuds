@@ -2,7 +2,6 @@
 from typing import TYPE_CHECKING, Dict, Optional
 
 import dlite
-
 from oteapi.models import AttrDict, ResourceConfig, SessionUpdate
 from pydantic import Field
 from pydantic.dataclasses import dataclass
@@ -24,7 +23,7 @@ class CollectionParseConfig(AttrDict):
 
     collectionId: str = Field(
         ...,
-        description=("Id of collection defined in the storage located at downloadUrl")
+        description=("Id of collection defined in the storage located at downloadUrl"),
     )
 
 
@@ -41,8 +40,10 @@ class CollectionParseResourceConfig(ResourceConfig):
 
 class SessionUpdateCollectionParse(SessionUpdate):
     """Class for returning values from Collection Parse."""
-    collection_key_dict: Dict[str, str] = Field(...,
-                description=("Dictionary of collection keys/labels - uuid"))
+
+    collection_key_dict: Dict[str, str] = Field(
+        ..., description=("Dictionary of collection keys/labels - uuid")
+    )
 
 
 @dataclass
@@ -57,11 +58,17 @@ class CollectionParseStrategy:
 
     parse_config: CollectionParseResourceConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
-    def get(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def get(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Parse Collection.
         Arguments:
             session: A session-specific dictionary context.
@@ -82,11 +89,11 @@ class CollectionParseStrategy:
 
         dlite.storage_path.append(str(url_to_path(self.parse_config.downloadUrl)))
 
-        try: # not working at the moment. Maybe not supported by DLite. MUST TEST THIS
+        try:  # not working at the moment. Maybe not supported by DLite. MUST TEST THIS
             coll = dlite.get_collection(self.parse_config.configuration.collectionId)
         except dlite.DLiteError as error:
             raise DLiteCUDSError("Could not get collection! " + repr(error)) from error
-        #coll = dlite.Collection()
+        # coll = dlite.Collection()
 
         # If the label is already in the collection_key_dict
         # the old id in the collection_id_dict
@@ -94,7 +101,5 @@ class CollectionParseStrategy:
         collection_key_dict[label] = coll.uuid
 
         return SessionUpdateCollectionParse(
-            **{
-                "collection_key_dict": collection_key_dict
-            },
+            **{"collection_key_dict": collection_key_dict},
         )
