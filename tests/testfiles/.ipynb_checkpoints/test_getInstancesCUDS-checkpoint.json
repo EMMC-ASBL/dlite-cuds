@@ -1,0 +1,53 @@
+{
+  "8d82bb21-7b09-4fe4-8131-caf9e8467f65":   {
+    "meta": "http://www.ontotrans.eu/0.1/beamManufacturingDatum",
+    "dimensions": {
+    },
+    "properties": {
+      "blooming_duration": 2,
+      "blooming_total_passes": 2,
+      "c": 0.1,
+      "elongation_european": 28,
+      "flitzer_duration": 2,
+      "mn": 0.1,
+      "pyro_bp2_temp_max": 300,
+      "qst_duration": 2,
+      "qst_entry_temp_estimate": 2,
+      "qst_flow_rate_total": 2,
+      "qst_water_temp_entry": 2,
+      "tandem_duration": 2,
+      "toughness_mean": 100,
+      "v": 0.1
+    }
+  },
+  "7b1dddbe-a2bf-4d10-8aaf-5e981d580971":   {
+    "meta": "http://onto-ns.com/meta/0.1/Collection",
+    "dimensions": {
+      "nrelations": 8
+    },
+    "properties": {
+      "relations": [["datum_0", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://www.osp-core.com/amiii#beamManufacturingDatum"], ["datum_0", "_is-a", "Instance"], ["datum_0", "_has-uuid", "8d82bb21-7b09-4fe4-8131-caf9e8467f65"], ["datum_0", "_has-meta", "http://www.ontotrans.eu/0.1/beamManufacturingDatum"], ["datum_1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://www.osp-core.com/amiii#beamManufacturingDatum"], ["datum_1", "_is-a", "Instance"], ["datum_1", "_has-uuid", "eedc50f9-7ccd-410b-8d5a-c9a823b39765"], ["datum_1", "_has-meta", "http://www.ontotrans.eu/0.1/beamManufacturingDatum"]]
+    }
+  },
+  "eedc50f9-7ccd-410b-8d5a-c9a823b39765":   {
+    "meta": "http://www.ontotrans.eu/0.1/beamManufacturingDatum",
+    "dimensions": {
+    },
+    "properties": {
+      "blooming_duration": 2,
+      "blooming_total_passes": 2,
+      "c": 0.1,
+      "elongation_european": 28,
+      "flitzer_duration": 2,
+      "mn": 0.1,
+      "pyro_bp2_temp_max": 300,
+      "qst_duration": 2,
+      "qst_entry_temp_estimate": 2,
+      "qst_flow_rate_total": 2,
+      "qst_water_temp_entry": 2,
+      "tandem_duration": 2,
+      "toughness_mean": 100,
+      "v": 0.1
+    }
+  }
+}

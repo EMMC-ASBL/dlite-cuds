@@ -1,0 +1,92 @@
+{
+    "uri": "http://www.ontotrans.eu/0.1/beamManufacturingDatum",
+    "description": "",
+    "dimensions": [
+    ],
+    "properties": [
+      {
+        "name": "blooming_duration",
+        "type": "float32",
+        "unit": "s",
+        "description": "Time in seconds spent in the blooming mill"
+      },
+      {
+        "name": "blooming_total_passes",
+        "type": "float32",
+        "unit": "-",
+        "description": "Total number of passes in the blooming stand, should always be an even number"
+      },
+      {
+        "name": "c",
+        "type": "float32",
+        "unit": "mass_fraction",
+        "description": "Carbon content in the tundish"
+      },
+      {
+        "name": "elongation_european",
+        "type": "float32",
+        "unit": "%",
+        "description": "Elongation according to European standard"
+      },
+      {
+        "name": "flitzer_duration",
+        "type": "float32",
+        "unit": "s",
+        "description": "Time in seconds spent in the Flitzer"
+      },
+      {
+        "name": "mn",
+        "type": "float32",
+        "unit": "mass_fraction",
+        "description": "Manganese content in the tundish"
+      },
+      {
+        "name": "pyro_bp2_temp_max",
+        "type": "float32",
+        "unit": "C",
+        "description": "Maximum temperature measured at pyrometer BP2 after rolling in the blooming stand has finished"
+      },
+      {
+        "name": "qst_duration",
+        "type": "float32",
+        "unit": "s",
+        "description": "Time in seconds spent in the QST"
+      },
+      {
+        "name": "qst_entry_temp_estimate",
+        "type": "float32",
+        "unit": "C",
+        "description": "Estimated entry temperature in the QST"
+      },
+      {
+        "name": "qst_flow_rate_total",
+        "type": "float32",
+        "unit": "m^3/h",
+        "description": "Total water flow"
+      },
+      {
+        "name": "qst_water_temp_entry",
+        "type": "float32",
+        "unit": "C",
+        "description": "Water temperature"
+      },
+      {
+        "name": "tandem_duration",
+        "type": "float32",
+        "unit": "s",
+        "description": "Time in seconds spent in the tandem mill"
+      },
+      {
+        "name": "toughness_mean",
+        "type": "float32",
+        "unit": "J",
+        "description": "Average result of the three Charpy V-notch tests"
+      },
+      {
+        "name": "v",
+        "type": "float32",
+        "unit": "mass_fraction",
+        "description": "Vanadium content in the tundish"
+      }
+    ]
+  }
