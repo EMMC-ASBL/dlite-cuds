@@ -1,0 +1,106 @@
+### Installation and source distribution configuration
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "dlite-cuds"
+authors = [
+    {name = "Team4.0", email = "team4.0@sintef.no"},
+]
+description = "OTEAPI Plugin."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    # "Framework :: OTEAPI",
+    "Environment :: Plugins",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+]
+keywords = ["OTE", "OTEAPI"]
+requires-python = "~=3.9"
+dynamic = ["version"]
+
+dependencies = [
+    "oteapi-core >=0.2.1,<1",
+]
+
+[project.optional-dependencies]
+doc = [
+    "invoke ~=2.0",
+    "mike ~=1.1",
+    "mkdocs ~=1.4",
+    "mkdocs-awesome-pages-plugin ~=2.8",
+    "mkdocs-material ~=9.0",
+    "mkdocstrings[python] ~=0.20.0",
+]
+dev = [
+    "invoke ~=2.0",
+    "mike ~=1.1",
+    "mkdocs ~=1.4",
+    "mkdocs-awesome-pages-plugin ~=2.8",
+    "mkdocs-material ~=9.0",
+    "mkdocstrings[python] ~=0.20.0",
+    "pre-commit ~=2.21",
+    "pylint ~=2.15",
+    "pytest ~=7.2",
+    "pytest-cov ~=4.0",
+    "tomlkit ~=0.11.6",
+]
+
+[project.urls]
+Home = "https://github.com/EMMC-ASBL/dlite-cuds"
+Documentation = "https://team4.0.github.io/dlite-cuds"
+Source = "https://github.com/EMMC-ASBL/dlite-cuds"
+"Issue Tracker" = "https://github.com/EMMC-ASBL/dlite-cuds/issues"
+Changelog = "https://github.com/EMMC-ASBL/dlite-cuds/blob/main/CHANGELOG.md"
+Package = "https://pypi.org/project/dlite-cuds"
+
+[project.entry-points."oteapi.download"]
+# "dlite_cuds.fileDEMO" = "dlite_cuds.strategies.download:DemoFileStrategy"
+[project.entry-points."oteapi.filter"]
+# "dlite_cuds.filter/DEMO" = "dlite_cuds.strategies.filter:DemoFilter"
+[project.entry-points."oteapi.function"]
+# "dlite_cuds.function/DEMO" = "dlite_cuds.strategies.function:DemoFunctionStrategy"
+[project.entry-points."oteapi.mapping"]
+# "dlite_cuds.mapping/DEMO" = "dlite_cuds.strategies.mapping:DemoMappingStrategy"
+[project.entry-points."oteapi.parse"]
+# "dlite_cuds.application/jsonDEMO" = "dlite_cuds.strategies.parse:DemoJSONDataParseStrategy"
+[project.entry-points."oteapi.resource"]
+# "dlite_cuds.DEMO-access-service" = "dlite_cuds.strategies.resource:DemoResourceStrategy"
+[project.entry-points."oteapi.transformation"]
+# "dlite_cuds.script/DEMO" = "dlite_cuds.strategies.transformation:DummyTransformationStrategy"
+
+[tool.flit.module]
+name = "dlite_cuds"
+
+### Dev tools configuration
+[tool.mypy]
+python_version = "3.9"
+ignore_missing_imports = true
+scripts_are_modules = true
+warn_unused_configs = true
+show_error_codes = true
+allow_redefinition = true
+
+[tool.pylint.messages_control]
+max-line-length = 90
+disable = [
+    "duplicate-code",
+    "no-name-in-module",
+    "too-few-public-methods",
+    "no-self-argument"
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-rs --cov=dlite_cuds --cov-report=term --durations=10"
+filterwarnings = [
+    "ignore:.*imp module.*:DeprecationWarning",
+    "ignore:.*_yaml extension module.*:DeprecationWarning"
+]
