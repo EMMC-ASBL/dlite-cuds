@@ -1,0 +1,12 @@
+{
+  "uri": "http://www.onto-ns.com/examples/0.1/entityexample",
+  "description": "",
+  "dimensions": [
+  ],
+  "properties": [
+    {
+      "name": "Block",
+      "type": "int32"
+    }
+  ]
+}

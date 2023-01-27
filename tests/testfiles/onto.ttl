@@ -1,0 +1,60 @@
+@prefix : <http://example.org/test-ontology#> .
+@prefix core: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/test-ontology> a owl:Ontology .
+
+:Forest a owl:Class ;
+    rdfs:subClassOf :Terrain ;
+    core:prefLabel "Forest"@en .
+
+:Grass a owl:Class ;
+    rdfs:subClassOf :Terrain ;
+    core:prefLabel "Grass"@en .
+
+:Water a owl:Class ;
+    rdfs:subClassOf :Terrain ;
+    core:prefLabel "Water"@en .
+
+:altLabel a owl:AnnotationProperty .
+
+:isLeftOf a owl:AsymmetricProperty,
+        owl:FunctionalProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:domain :Block ;
+    rdfs:range :Block ;
+    owl:inverseOf :isRightOf ;
+    core:prefLabel "isLeftOf"@en .
+
+:isNextTo a owl:IrreflexiveProperty,
+        owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:domain :Block ;
+    rdfs:range :Block ;
+    core:prefLabel "isNextTo"@en .
+
+:prefLabel a owl:AnnotationProperty .
+
+:x a owl:DatatypeProperty ;
+    rdfs:domain :Block ;
+    rdfs:range xsd:positiveInteger ;
+    core:prefLabel "x"@en .
+
+:isRightOf a owl:AsymmetricProperty,
+        owl:FunctionalProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:domain :Block ;
+    rdfs:range :Block ;
+    core:prefLabel "isRightOf"@en .
+
+:Terrain a owl:Class ;
+    core:prefLabel "Terrain"@en .
+
+:Block a owl:Class ;
+    core:prefLabel "Block"@en .
