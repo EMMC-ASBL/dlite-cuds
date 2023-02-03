@@ -25,11 +25,9 @@ def create_cuds_from_collection(collection, entity_collection, relation):
     """
 
     # Get mappings from coll_entity
-    # print('make graph entity')
     graph_entity = get_graph_collection(entity_collection)
 
     # add the relations from the collection coll in the graph
-    # print('make graph collection')
     graph_collection = get_graph_collection(collection)
 
     # get the list of instances meta_data contained in the collection
@@ -43,8 +41,6 @@ def create_cuds_from_collection(collection, entity_collection, relation):
             raise DLiteCUDSError("Multiple entities in collection.")
 
     # check that the entity is present in the graph (mapped to some concept)
-    # print('get_unique_triple')
-    # print('entity_uri',entity_uri)
     cudsclass_uri = get_unique_triple(
         graph_entity, entity_uri, predicate="http://emmo.info/domain-mappings#mapsTo"
     )
@@ -54,7 +50,6 @@ def create_cuds_from_collection(collection, entity_collection, relation):
         graph_collection, entity_uri, predicate="_has-meta"
     )
 
-    # print('list inst uuid in create from collection', list_uuid)
     triples = []
 
     for xuuid in list_uuid:
@@ -62,9 +57,6 @@ def create_cuds_from_collection(collection, entity_collection, relation):
         triples_instance = create_cuds_from_instance(
             graph_entity, instance, relation=relation
         )
-        # if triples_instance[3] == None:
-        #    return triples_instance
-        # add to instance list of triples to the global list
         triples.extend(triples_instance)
 
     return triples
@@ -103,9 +95,6 @@ def create_cuds_from_instance(graph, instance, relation, pred_v=None):
         all_mapped_uri = get_objects(graph, prop_uri, predicate=predicate_maps_to)
         if all_mapped_uri == None:
             return (graph, prop_uri, predicate_maps_to, all_mapped_uri)
-        # print(prop)
-        # print(predicate_maps_to)
-        # print('all_mapped_uri', all_mapped_uri)
         # if all_mapped_uri == None:
         #    return (graph, prop_uri, predicate_maps_to, all_mapped_uri)
         # there should be a test for this error
@@ -156,14 +145,7 @@ def get_triple_instance(graph, instance):
     # import pprint
     predicate_maps_to = "http://emmo.info/domain-mappings#mapsTo"
 
-    # print('graph')
-    # for g in graph:
-    #    pprint.pprint(g)
-    # print('instance')
-    # print(instance, instance.meta.uri)
-    # print('get objects')
     all_mapped_uri = get_objects(graph, instance.meta.uri, predicate=predicate_maps_to)
-    # print('all_mappped_uri', all_mapped_uri)
     if len(all_mapped_uri) > 1:
         raise DLiteCUDSError(
             f"The property {instance.uri} is mapped to multiple"
@@ -211,8 +193,6 @@ def get_triples_property(prop_name, namespace, value, etype, pred_v=None):  # un
         )  # emmo:hasQuantityValue
     obj_v = get_object_typed(value, etype)
     triples_prop.append((sub, pred_v, obj_v))
-    # print(f'sub {sub}, pred_v {pred_v}, obj_V {obj_v}')
-    print(triples_prop)
     return triples_prop, prop_uuid
 
 
