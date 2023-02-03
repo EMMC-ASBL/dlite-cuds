@@ -14,7 +14,9 @@ from dlite_cuds.utils.rdf import (
 from dlite_cuds.utils.utils import DLiteCUDSError
 
 
-def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-many-locals
+def cuds2dlite(
+    graph, cuds_class, cuds_relations, uri
+):  # pylint: disable=too-many-locals
     """
     Make a dlite entity and a mapping from cuds present in the graph
     """
@@ -24,6 +26,7 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
     # Get the list of properties
     # Include check if all the objects of the class have the same properties
     list_prop = None
+    print("list_objects", list_objects)
     for obj in list_objects:
         list_prop_0 = get_object_props_name(graph, obj, cuds_relations)
 
@@ -49,7 +52,6 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
                 dict_0[key] = prop[key]
         list_prop_data[prop["concept"]] = dict_0
 
-
     # go through the instances and get all their related instances
     # get the class of the related instances for dlite mapping
 
@@ -71,9 +73,14 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
 
     datamodel = DataModel(uri=uri, description=description)
     if list_prop:
-        for prop in list_prop:
+        for prop in set(
+            list_prop
+        ):  # Should count the number of times the prop comes up to add shape maybe?
+            print("prop", prop)
             prop_name = prop.split("#")[1]
             prop_type = list_prop_data[prop]["datatype"]  # "float"
+            if prop_type == "integer":
+                prop_type = "int"
             # prop_unit = list_prop_data[prop]["unit"]
             prop_description = "...default"
             prop_description = get_unique_triple(graph, prop, predicate_description)
@@ -101,15 +108,16 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
     return entity, triples
 
 
-def triple_to_spo(triple:str):
+def triple_to_spo(triple: str):
     """
     Split the triple string into subject, predicate, object
     """
-    listsegments = triple.replace("<","").replace(">","").split()
-    sub,pred,obj = listsegments[0],listsegments[1],listsegments[2]
-    return sub,pred,obj
+    listsegments = triple.replace("<", "").replace(">", "").split()
+    sub, pred, obj = listsegments[0], listsegments[1], listsegments[2]
+    return sub, pred, obj
 
-def spo_to_triple(sub:str,pred:str,obj:str):
+
+def spo_to_triple(sub: str, pred: str, obj: str):
     """
     Merge the subject, predicate, object into a triple
     """

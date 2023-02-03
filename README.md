@@ -1,5 +1,22 @@
 # DLite2CUDS
 
+## Restrictions on the input CUDS when converting to DLite DataModel
+
+The implementations has some severe restrictions for now:
+
+* An individual can only be an rdf:type of one class (i.e. it cannot be for instance both an rdf:type :Human and rdf:type Mother)
+
+* All individuals of the same type must have the exact same properties defined.
+
+Restrictions on Dlite Models etc:
+
+* Three things are needed: Entity of interest (e.g. the DataModel), collection with data, collection with mappings.
+
+* Not only properties must be mapped, but also the concepts/entities themselves.
+
+* Only single value data are supported (dimensionality in Dlite DataModel not yet implemented)
+
+
 An OTEAPI Plugin with OTE strategies.
 
 Further reading:
