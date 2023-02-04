@@ -1,0 +1,11 @@
+{
+  "5aa1622a-7b56-4215-a20b-464a3c9ba466":   {
+    "meta": "http://onto-ns.com/meta/0.1/Collection",
+    "dimensions": {
+      "nrelations": 9
+    },
+    "properties": {
+      "relations": [["http://onto-ns.com/meta/0.1/Molecule#name", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_99f2309f_e920_4c96_afba_493ca92182e0"], ["http://onto-ns.com/meta/0.1/Molecule#groundstate_energy", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_f57da558_e5b0_4ddb_b791_2878e58ec324"], ["http://onto-ns.com/meta/0.1/Molecule#positions", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#Position"], ["http://onto-ns.com/meta/0.1/Molecule#symbols", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#Symbol"], ["http://onto-ns.com/meta/0.1/Molecule#masses", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#Mass"], ["http://onto-ns.com/meta/0.1/Substance#id", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_99f2309f_e920_4c96_afba_493ca92182e0"], ["http://onto-ns.com/meta/0.1/Substance#molecule_energy", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_f57da558_e5b0_4ddb_b791_2878e58ec324"], ["http://onto-ns.com/meta/0.1/Molecule", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_fd9be2ac_477a_44b2_b9b0_f7c1d369ae81"], ["http://onto-ns.com/meta/0.1/Substance", "http://emmo.info/domain-mappings#mapsTo", "http://onto-ns.com/ontology/chemistry#EMMO_fd9be2ac_477a_44b2_b9b0_f7c1d369ae81"]]
+    }
+  }
+}
