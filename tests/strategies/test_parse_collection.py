@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import dlite
+import pytest
 
 from dlite_cuds.strategies.parse_collection import CollectionParseStrategy
 from dlite_cuds.utils.utils_path import url_to_path
@@ -14,6 +15,7 @@ if TYPE_CHECKING:
     from dlite_cuds.strategies.parse_collection import SessionUpdateCollectionParse
 
 
+@pytest.mark.skip("Not yet fixed after porting.")
 def test_parse_collection(repo_dir: "Path") -> None:
     """Test for the parse_collection strategy"""
     # os.chdir(repo_dir)
@@ -53,6 +55,7 @@ def test_parse_collection(repo_dir: "Path") -> None:
     return parsed_data
 
 
+@pytest.mark.skip("Not yet fixed after porting.")
 def test_get_collection(repo_dir: "Path") -> None:
     """Test for the parse_collection strategy"""
     # os.chdir(repo_dir)

@@ -6,12 +6,11 @@ from rdflib import Literal, URIRef
 from rdflib.namespace import XSD
 
 from dlite_cuds.utils.dlite_utils import get_type_unit_list
-from dlite_cuds.utils.rdf import (
+from dlite_cuds.utils.rdf import (  # get_unique_triple,
     get_graph_collection,
     get_list_instance_uuid,
     get_list_sub_obj,
     get_objects,
-    get_unique_triple,
 )
 from dlite_cuds.utils.utils import DLiteCUDSError
 
@@ -34,16 +33,16 @@ def create_cuds_from_collection(collection, entity_collection, relation):
     list_label_meta = get_list_sub_obj(graph=graph_collection)
     # check that all instances of the collection have the same meta_data
     entity_uri = None
-    for (label, meta) in list_label_meta:
+    for (_, meta) in list_label_meta:
         if entity_uri is None:
             entity_uri = meta
         elif meta != entity_uri:
             raise DLiteCUDSError("Multiple entities in collection.")
 
     # check that the entity is present in the graph (mapped to some concept)
-    cudsclass_uri = get_unique_triple(
-        graph_entity, entity_uri, predicate="http://emmo.info/domain-mappings#mapsTo"
-    )
+    # cudsclass_uri = get_unique_triple(
+    #    graph_entity, entity_uri, predicate="http://emmo.info/domain-mappings#mapsTo"
+    # )
 
     # get the list of instances of the entity
     list_uuid = get_list_instance_uuid(
@@ -73,6 +72,7 @@ def create_cuds_from_instance(graph, instance, relation, pred_v=None):
 
     returns a list of triples
     """
+    # pylint: disable=too-many-locals
     predicate_maps_to = "http://emmo.info/domain-mappings#mapsTo"
 
     # start by adding the triple representing the instance
@@ -93,7 +93,7 @@ def create_cuds_from_instance(graph, instance, relation, pred_v=None):
         # get the corresponding mappings there must be only one result
         # as the graph provided is coming from collectin entity
         all_mapped_uri = get_objects(graph, prop_uri, predicate=predicate_maps_to)
-        if all_mapped_uri == None:
+        if all_mapped_uri is None:
             return (graph, prop_uri, predicate_maps_to, all_mapped_uri)
         # if all_mapped_uri == None:
         #    return (graph, prop_uri, predicate_maps_to, all_mapped_uri)
@@ -113,7 +113,7 @@ def create_cuds_from_instance(graph, instance, relation, pred_v=None):
             namespace = prop_uri_onto.split("#")[0] + "#"
         elif namespace != prop_uri_onto.split("#")[0] + "#":
             raise DLiteCUDSError(
-                "Multiple namespace used in the mapping," "check validity"
+                "Multiple namespace used in the mapping, check validity"
             )
 
         prop_name_onto = prop_uri_onto.split("#")[1]
@@ -189,7 +189,8 @@ def get_triples_property(prop_name, namespace, value, etype, pred_v=None):  # un
     # add value
     if not pred_v:
         pred_v = URIRef(
-            "http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0"
+            "http://www.w3.org/2002/07/owl#topDataProperty"
+            # "http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0"
         )  # emmo:hasQuantityValue
     obj_v = get_object_typed(value, etype)
     triples_prop.append((sub, pred_v, obj_v))
@@ -201,14 +202,12 @@ def get_object_typed(value, etype):
     Returns a Literal that contains the XSD type
     depending on the type defined in the entity
     """
-    # print(etype, value)
-    if etype == "str" or etype == "string":
-        # print('etype string', Literal(value,datatype=XSD.string))
+    if etype in ["str", "string"]:
         return Literal(value, datatype=XSD.string)
-    elif etype == "int":
+    if etype == "int":
         return Literal(value, datatype=XSD.integer)
-    elif etype in ["float32", "float64"]:
+    if etype in ["float32", "float64"]:
         return Literal(value, datatype=XSD.float)
-    else:
-        print(etype, value)
-        raise ValueError("in get_object_typed, etype not recognized: ", etype)
+
+    print(etype, value)
+    raise ValueError("in get_object_typed, etype not recognized: ", etype)

@@ -1,86 +1,76 @@
 """
 Module to test the functions of cuds2delite
 """
-import os
 from pathlib import Path
 
-from rdflib import Graph, Literal, URIRef
-from rdflib.namespace import XSD
-from tripper.triplestore import Triplestore
+import dlite
+from rdflib import Graph
+from simphony_osp.tools import import_file, pretty_print
 
 from dlite_cuds.utils.dlite2cuds import create_cuds_from_collection
 
 
-def create_triple_typed():
+def test_dlite2cuds(
+    repo_dir: "Path", tmpdir: "Path"  # pylint: disable=unused-argument
+) -> None:
     """
-    Create a triple with a type to emulate cuds
+    Test that a dlite datamodel with mapping is converted to a CUDS that can be
+    read by simphony osp.
+
+    The actual values of the CUDS are not tested (as of yet).
     """
-
-    # graph = Graph()
-
-    # sub = URIRef("http://www.osp-core.com/cuds#fd06dcd3-d5c5-44f9-af3e-d0f2c55ad8f9")
-    # pred = URIRef("")
-    # obj = Literal("J", datatype=XSD.string)
-
-    # graph.add((sub, pred, obj))
-
-    # repo_dir = Path(__file__).parent.parent.parent.resolve() / "tests/testfiles"
-    # os.chdir(repo_dir)
-    # graph.serialize(destination="test_create_triple_typed.nt", format="nt")
-
-
-def test_dlite_to_cuds(repo_dir: "Path") -> None:
-
-    test_mapping_path = repo_dir / "tests" / "temp" / "input_entity_mapping.json"
-    test_entity_path = repo_dir / "tests" / "temp" / "input_entity.json"
-
-    import dlite
-
-    test_mapping_path = dlite.Instance.from_url(f"json://{test_mapping_path}")
-
-    molecule_path = repo_dir / "tests" / "testfiles" / "Molecule.json"
-
-    mappings = [
-        ("http://onto-ns.com/meta/0.1/Molecule#name", ":mapsTo", "chem:Identifier"),
-        (
-            "http://onto-ns.com/meta/0.1/Molecule#groundstate_energy",
-            ":mapsTo",
-            "chem:GroundStateEnergy",
-        ),
-        ("http://onto-ns.com/meta/0.1/Substance#id", ":mapsTo", "chem:Identifier"),
-        (
-            "http://onto-ns.com/meta/0.1/Substance#molecule_energy",
-            ":mapsTo",
-            "chem:GroundStateEnergy",
-        ),
-    ]
-
-    molecule = dlite.Instance.from_url(f"json://{molecule_path}")
-
-    collection = dlite.Collection()
-
-    collection.add(label="Molecule", inst=molecule)
-    ts = Triplestore(backend="collection", collection=collection)
-    CHEM = ts.bind("chem", "http://...")
-    MOL = ts.bind("mol", "http://onto-ns.com/meta/0.1/Molecule#")
-    SUB = ts.bind("sub", "http://onto-ns.com/meta/0.1/Substance#")
-    ts.add_triples(mappings)
-    filname = (
-        repo_dir
-        / "tests"
-        / "output_files"
-        / "collection_generated_by_dlite2cuds_test.json"
+    # Molecule with only single values as data
+    molecule_path = (
+        repo_dir / "tests" / "inputfiles_dlite2cuds" / "entities" / "Substance.json"
+    )
+    molecule_data_path = (
+        repo_dir / "tests" / "inputfiles_dlite2cuds" / "substance_data.json"
     )
 
-    # coll.save('json', filname, options="mode=w")
+    # Molecule with dimensions greater than one (i.e. arrays or lists)
+    # molecule_path =   "inputfiles_dlite2cuds/entities/Molecule.json"
+    # molecule_data_path = "inputfiles_dlite2cuds/molecule_data.json"
 
-    relation = "http://www.onto-ns.com/onto#hasProperty"
-    triple_list = create_cuds_from_collection(molecule, collection, relation)
+    # Set path to where data can be found
+    dlite.storage_path.append(molecule_data_path)
 
+    # Molecule as dlite.Instance
+    molecule = dlite.Instance.from_url(  # pylint: disable=unused-variable
+        f"json://{molecule_path}"
+    )
+
+    # Path to collection with mappings
+    collection_path = (
+        repo_dir / "tests" / "inputfiles_dlite2cuds" / "mapping_collection.json"
+    )
+    collection = dlite.Instance.from_url(f"json://{collection_path}")
+
+    # Get data
+    molecule_data = dlite.get_instance("cd08e186-798f-53ec-8a41-7a4849225abd")
+
+    # Define relation for making triples , emmo:hasProperty
+    relation = "http://emmo.info/emmo#EMMO_e1097637_70d2_4895_973f_2396f04fa204"
+
+    # Convert data to list of triples
+    triple_list = create_cuds_from_collection(molecule_data, collection, relation)
+
+    # Make a graph
     graph_cuds = Graph()
-    for triple in triples_list:
+    for triple in triple_list:
         graph_cuds.add(triple)
 
+    # Serialize to turtle format
+    # filename = tmpdir / "cuds.ttl" # the temporary file is removed
+    # immediately and not at
+    # the end of the test it seems.
+    filename = "cuds.ttl"
+    graph_cuds.serialize(format="turtle", destination=filename)
+
+    # Import cuds
+    cuds = import_file(filename, format="turtle")
+
     print("=== CUDS ===")
-    print(graph_cuds.serialize(format="json-ld"))
+    for i in cuds:
+        pretty_print(i)
+
     print("===============")
