@@ -90,7 +90,6 @@ def get_objects(
     # print('getobjects before query')
     # print('s', subj_m)
     # print('p',predicate_m)
-    import pprint
 
     # for g in graph:
     #    pprint.pprint(g)
@@ -113,7 +112,9 @@ def get_objects(
         obj_list.append(str(row.o))
         if dtype:
             if "_datatype" in dir(row["o"]):
-                data_type_list.append(row["o"]._datatype.split("#")[1])
+                data_type_list.append(
+                    row["o"]._datatype.split("#")[1]  # pylint: disable=protected-access
+                )
             else:
                 data_type_list.append("")
     if dtype:
@@ -149,7 +150,9 @@ def get_unique_triple(
         obj = str(row.o)
         if dtype:
             if "_datatype" in dir(row["o"]):
-                datatype = row["o"]._datatype.split("#")[1]
+                datatype = row["o"]._datatype.split(  # pylint: disable=protected-access
+                    "#"
+                )[1]
 
             else:
                 datatype = None
@@ -213,7 +216,8 @@ def get_object_props_uri(graph, subj, relations):
 def get_value_prop(
     graph,
     prop_uri,
-    value_predicate="http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0",  # EMMO:hasQuantityValue
+    # EMMO:hasQuantityValue
+    value_predicate="http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0"
     # Should maybe not have a default?
 ):
     """Return a dict containing the concept, the value and the unit

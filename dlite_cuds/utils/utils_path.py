@@ -4,7 +4,7 @@ import urllib.parse
 
 
 def url_to_path(var_url):
-    """ return the correct path from the url
+    """return the correct path from the url
     valid on both Linux and Windows"""
     var_path_raw = urllib.parse.urlparse(var_url).path
     var_path_decode = urllib.parse.unquote(var_path_raw)

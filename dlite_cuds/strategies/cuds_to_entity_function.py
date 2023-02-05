@@ -49,8 +49,10 @@ class EntityConfig(AttrDict):
 
     graph_cache_key: Optional[str] = Field(
         None,
-        description=("Cache key to the graph in the datacache that contains all the cuds"
-                     " and the ontotogy."),
+        description=(
+            "Cache key to the graph in the datacache that contains all the cuds"
+            " and the ontotogy."
+        ),
     )
 
     cudsRelations: List[str] = Field(
@@ -64,13 +66,13 @@ class EntityConfig(AttrDict):
     )
 
     namespace: str = Field(
-        "http://www.namespace.no", # Should be changed to DLite default namespace
+        "http://www.namespace.no",  # Should be changed to DLite default namespace
         description=("Namespace of the DLite entity"),
     )
 
     version: Optional[str] = Field(
         "0.1",
-        #TODO improve unclear description
+        # Must improve unclear description
         description=("Version of the dlite entity"),
     )
 
@@ -89,17 +91,18 @@ class EntityFunctionConfig(FunctionConfig):
 class SessionUpdateEntityFunction(SessionUpdate):
     """Class for returning values when converting from CUDS to DLite Entity."""
 
-    triples_key: str = Field(..., description="Key to triples in datacache "
-                                "representing the mapping"
-                                "of the entity properties to the ontology."
-                            )
-    entity_uri: str = Field(
-        ..., description="uri of the newly created Dlite entity."
+    triples_key: str = Field(
+        ...,
+        description="Key to triples in datacache "
+        "representing the mapping"
+        "of the entity properties to the ontology.",
     )
+    entity_uri: str = Field(..., description="uri of the newly created Dlite entity.")
     # adding the collection id in the session update
     entity_collection_id: str = Field(
-        ..., description="id of the collection that contains the entity and"
-                         "the mapping relations."
+        ...,
+        description="id of the collection that contains the entity and"
+        "the mapping relations.",
     )
 
 
@@ -115,7 +118,10 @@ class EntityFunctionStrategy:
 
     function_config: EntityFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
@@ -131,7 +137,7 @@ class EntityFunctionStrategy:
             - uri of the DLite entity.
             - uri of the DLite collection containing the entity and mapping relations.
         """
-
+        # pylint: disable=too-many-locals
         if session is None:
             raise DLiteCUDSError("Missing session")
 
@@ -160,9 +166,7 @@ class EntityFunctionStrategy:
         cuds_relations = self.function_config.configuration.cudsRelations
 
         if self.function_config.configuration.entityName is None:
-            self.function_config.configuration.entityName = (
-                cuds_class.split("#")[1]
-            )
+            self.function_config.configuration.entityName = cuds_class.split("#")[1]
 
         # Build the uri of the new DLite entity
         uri = (
@@ -177,8 +181,9 @@ class EntityFunctionStrategy:
         entity, triples = cuds2dlite(graph, cuds_class, cuds_relations, uri)
 
         # Append to the triple the mapping of the entity to the cuds_class
-        triples.append(spo_to_triple(uri,"http://emmo.info/domain-mappings#mapsTo",
-                                     cuds_class))
+        triples.append(
+            spo_to_triple(uri, "http://emmo.info/domain-mappings#mapsTo", cuds_class)
+        )
 
         triples_key = cache.add(triples)
 
@@ -188,14 +193,14 @@ class EntityFunctionStrategy:
 
         # Need to include the relations representing the mapping
         for triple in triples:
-            sub,pred,obj = triple_to_spo(triple)
-            coll.add_relation(sub,pred,obj)
+            sub, pred, obj = triple_to_spo(triple)
+            coll.add_relation(sub, pred, obj)
 
         return SessionUpdateEntityFunction(
             **{
                 "triples_key": triples_key,
                 "entity_uri": uri,
                 "entity_collection_id": coll.uuid,
-                "entity_uuid": entity.uuid
+                "entity_uuid": entity.uuid,
             }
         )
