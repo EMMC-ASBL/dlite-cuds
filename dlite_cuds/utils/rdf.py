@@ -216,8 +216,8 @@ def get_object_props_uri(graph, subj, relations):
 def get_value_prop(
     graph,
     prop_uri,
-    # EMMO:hasQuantityValue
-    value_predicate="http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0"
+    #
+    value_predicate="http://www.w3.org/2002/07/owl#topDataProperty"
     # Should maybe not have a default?
 ):
     """Return a dict containing the concept, the value and the unit

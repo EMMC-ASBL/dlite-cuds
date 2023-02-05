@@ -1,61 +1,58 @@
 """
 Module to test the functions of cuds2delite
 """
-import os
+import warnings
 from pathlib import Path
 
-import pytest
 from rdflib import Graph
 
+from dlite_cuds.utils.cuds2dlite import cuds2dlite
 from dlite_cuds.utils.rdf import get_graph
 
 
-@pytest.mark.skip("test_cuds2dlite not yet fixed after porting.")
-def test_cuds2dlite():
+def test_create_entity(
+    repo_dir: "Path", tmpdir: "Path"  # pylint: disable=unused-argument
+) -> None:
     """
     Testing the creation of the entity from cuds
 
     Currently this test does nothing
     """
 
-    repo_dir = Path(__file__).parent.resolve() / "testfiles"
-    os.chdir(repo_dir)
-    ontologyfile = "onto.ttl"
-    cudsfile = "cuds.ttl"
-
+    ontologyfile = (
+        repo_dir / "tests" / "inputfiles_dlite2cuds" / "ontology" / "chemistry.ttl"
+    )
+    cudsfile = repo_dir / "tests" / "inputfiles_cuds2dlite" / "cuds.ttl"
+    cuds_class = (
+        "http://onto-ns.com/ontology/chemistry"
+        "#EMMO_fd9be2ac_477a_44b2_b9b0_f7c1d369ae81"
+    )
+    cuds_relations = ["http://emmo.info/emmo#EMMO_e1097637_70d2_4895_973f_2396f04fa204"]
+    uri = "http://onto-ns.com/meta/0.1/Newentity"
     # creation of a local graph
     graph = Graph()
 
     graph = get_graph(ontologyfile)
     graph += get_graph(cudsfile)
-
     # the graph needs to contain the ontology and cuds
 
-    namespace = "http://www.ontotrans.eu"
-    version = "0.1"
-    entityname = "entitytest"
+    entity, triples = cuds2dlite(graph, cuds_class, cuds_relations, uri)
 
-    uri = (  # pylint: disable=unused-variable
-        namespace + "/" + version + "/" + entityname
-    )
+    assert triples  # Need to make proper tests to check content of both
 
-    cuds_class = ""  # pylint: disable=unused-variable
-    cuds_relations = [  # pylint: disable=unused-variable
-        "",
-        "",
-    ]
-    # Note that in this test cuds2dlite is not tested as it is not even imported
+    entity.save("json", f"{repo_dir}/datamodel_output.json", "mode=w")
 
 
-def test_create_instance():
+def test_find_instance():
     """
     testing if the entity is available from dlite based on uri
     Currently this test does nothing
     """
-    namespace = "http://www.ontotrans.eu"
+    namespace = "http://onto-ns.com/meta"
     version = "0.1"
-    entityname = "entitytest"
+    entityname = "Newentity"
 
     uri = (  # pylint: disable=unused-variable
         namespace + "/" + version + "/" + entityname
     )
+    warnings.warn("test_find_instance does nothing")

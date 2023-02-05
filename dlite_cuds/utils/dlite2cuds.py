@@ -188,10 +188,7 @@ def get_triples_property(prop_name, namespace, value, etype, pred_v=None):  # un
 
     # add value
     if not pred_v:
-        pred_v = URIRef(
-            "http://www.w3.org/2002/07/owl#topDataProperty"
-            # "http://emmo.info/emmo#EMMO_8ef3cd6d_ae58_4a8d_9fc0_ad8f49015cd0"
-        )  # emmo:hasQuantityValue
+        pred_v = URIRef("http://www.w3.org/2002/07/owl#topDataProperty")
     obj_v = get_object_typed(value, etype)
     triples_prop.append((sub, pred_v, obj_v))
     return triples_prop, prop_uuid

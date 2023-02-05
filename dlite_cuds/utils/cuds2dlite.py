@@ -19,27 +19,32 @@ def cuds2dlite(
 ):  # pylint: disable=too-many-locals
     """
     Make a dlite entity and a mapping from cuds present in the graph
+    Arguments:
+       graph
+       cuds_class
+       cuds_relations
+       uri
     """
     # Query the graph to get the list of subjects that are defined as cudsClass
     list_objects = get_list_class(graph, cuds_class)
-
     # Get the list of properties
     # Include check if all the objects of the class have the same properties
     list_prop = None
-    print("list_objects", list_objects)
+    print("list_objects***", list_objects)
     for obj in list_objects:
         list_prop_0 = get_object_props_name(graph, obj, cuds_relations)
 
         if list_prop is None:
             list_prop = list_prop_0
             list_prop_uri = get_object_props_uri(graph, obj, cuds_relations)
+            print("list_prop_uri", list_prop_uri)
         else:
             # compare the two lists
             if list_prop != list_prop_0:
                 raise DLiteCUDSError(
                     f"Error: the list of properties is not the same: {list_prop_0}"
                 )
-
+    print("list_prop_uri", list_prop_uri)
     # Fetch the unit and values
     # That the CUDS is consitent and that all similar properties have the
     # same unit and type is assumed
@@ -47,6 +52,7 @@ def cuds2dlite(
     for prop_uri in list_prop_uri:
         prop = get_value_prop(graph, prop_uri)
         dict_0 = {}
+        print("prop", prop)
         for key in prop:  # pylint: disable=consider-using-dict-items
             if key != "concept":
                 dict_0[key] = prop[key]

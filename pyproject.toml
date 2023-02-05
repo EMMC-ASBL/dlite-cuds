@@ -66,16 +66,16 @@ Package = "https://pypi.org/project/dlite-cuds"
 #[project.entry-points.oteapi.download]
 #[project.entry-points.oteapi.filter]
 [project.entry-points."oteapi.function"]
-"dlite_cuds.function/CUDS2Entity" = "dlite_cuds.strategies.cuds_to_entity_function:EntityFunctionStrategy"
-"dlite_cuds.function/CUDS2Collection" = "dlite_cuds.strategies.cuds_to_collection_function:CollectionFunctionStrategy"
-"dlite_cuds.function/Collection2CUDS" = "dlite_cuds.strategies.collection_to_cuds_function:CUDSFunctionStrategy"
-"dlite_cuds.function/SaveInstance" = "dlite_cuds.strategies.save_instance:InstanceSaveStrategy"
-"dlite_cuds.function/SaveGraph" = "dlite_cuds.strategies.save_graph:GraphSaveStrategy"
+#"dlite_cuds.function/CUDS2Entity" = "dlite_cuds.strategies.cuds_to_entity_function:EntityFunctionStrategy"
+#"dlite_cuds.function/CUDS2Collection" = "dlite_cuds.strategies.cuds_to_collection_function:CollectionFunctionStrategy"
+#"dlite_cuds.function/Collection2CUDS" = "dlite_cuds.strategies.collection_to_cuds_function:CUDSFunctionStrategy"
+#"dlite_cuds.function/SaveInstance" = "dlite_cuds.strategies.save_instance:InstanceSaveStrategy"
+#"dlite_cuds.function/SaveGraph" = "dlite_cuds.strategies.save_graph:GraphSaveStrategy"
 [project.entry-points."oteapi.mapping"]
 [project.entry-points."oteapi.parse"]
-"dlite_cuds.application/CUDS" = "dlite_cuds.strategies.parse:CUDSParseStrategy"
-"dlite_cuds.application/Collection" = "dlite_cuds.strategies.parse_collection:CollectionParseStrategy"
-"dlite_cuds.application/Instance" = "dlite_cuds.strategies.parse_instance:InstanceParseStrategy"
+#"dlite_cuds.application/CUDS" = "dlite_cuds.strategies.parse:CUDSParseStrategy"
+#"dlite_cuds.application/Collection" = "dlite_cuds.strategies.parse_collection:CollectionParseStrategy"
+#"dlite_cuds.application/Instance" = "dlite_cuds.strategies.parse_instance:InstanceParseStrategy"
 [project.entry-points."oteapi.resource"]
 [project.entry-points."oteapi.transformation"]
 [tool.flit.module]
