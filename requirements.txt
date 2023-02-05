@@ -1,3 +1,0 @@
-Dlite-Python
-oteapi-core
-simphony-osp >=4.0
