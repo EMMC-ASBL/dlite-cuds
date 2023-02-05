@@ -1,5 +1,0 @@
-DLite-Python>=0.3.8
-osp-core==3.7.0
-oteapi-core>=0.1.0,<1
-otelib
-rdflib
