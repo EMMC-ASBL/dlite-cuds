@@ -38,6 +38,7 @@ jobs:
         #done < requirements_docs.txt
         pip install -e .[dev]
         pip install -e .[docs]
+        pip install -e .
         # pip install ${pre_commit} ${invoke}
 
     - name: Test with pre-commit
@@ -63,6 +64,7 @@ jobs:
         #pip install -U -r requirements.txt -r requirements_dev.txt -r requirements_docs.txt
         pip install -e .[dev]
         pip install -e .[docs]
+        pip install -e .
         pip install safety
 
     - name: Run pylint
