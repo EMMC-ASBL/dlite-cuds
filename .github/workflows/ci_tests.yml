@@ -36,8 +36,8 @@ jobs:
         #    invoke="${line}"
         #  fi
         #done < requirements_docs.txt
-
-        pip install ${pre_commit} ${invoke}
+        pip install -e .[dev+docs]
+        # pip install ${pre_commit} ${invoke}
 
     - name: Test with pre-commit
       run: SKIP=pylint,pylint-tests pre-commit run --all-files
