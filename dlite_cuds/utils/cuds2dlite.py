@@ -2,7 +2,10 @@
 Module to extract information from a serialized CUDS and create instances.
 """
 
+from typing import List
+
 from dlite.datamodel import DataModel
+from rdflib.graph import Graph
 
 from dlite_cuds.utils.rdf import (
     get_list_class,
@@ -15,7 +18,10 @@ from dlite_cuds.utils.utils import DLiteCUDSError
 
 
 def cuds2dlite(
-    graph, cuds_class, cuds_relations, uri
+    graph: Graph,
+    cuds_class: str,
+    cuds_relations: List[str],
+    uri: str,
 ):  # pylint: disable=too-many-locals
     """
     Make a dlite entity and a mapping from cuds present in the graph

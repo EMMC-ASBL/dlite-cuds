@@ -54,7 +54,6 @@ def test_dlite2cuds(
 
     # Define relation for making triples , emmo:hasProperty
     relation = "http://emmo.info/emmo#EMMO_e1097637_70d2_4895_973f_2396f04fa204"
-
     # Convert data to list of triples
     triple_list = create_cuds_from_collection(molecule_data, collection, relation)
 

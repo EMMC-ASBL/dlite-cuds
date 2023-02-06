@@ -1,7 +1,9 @@
 """ Converting dlite collection to cuds."""
 import uuid
+from typing import Optional
 
 import dlite
+from dlite import Collection
 from rdflib import Literal, URIRef
 from rdflib.namespace import XSD
 
@@ -61,7 +63,9 @@ def create_cuds_from_collection(collection, entity_collection, relation):
     return triples
 
 
-def create_cuds_from_instance(graph, instance, relation, pred_v=None):
+def create_cuds_from_instance(
+    graph: Collection, instance: Collection, relation: str, pred_v: Optional[str] = None
+):
     """
     The graph in input must contain the mapping of the entity
     Arguments:

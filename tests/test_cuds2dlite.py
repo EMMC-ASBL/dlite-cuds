@@ -33,7 +33,6 @@ def test_create_entity(
     uri = "http://onto-ns.com/meta/0.1/Newentity"
     # creation of a local graph
     graph = Graph()
-
     graph = get_graph(ontologyfile)
     graph += get_graph(cudsfile)
     # the graph needs to contain the ontology and cuds
