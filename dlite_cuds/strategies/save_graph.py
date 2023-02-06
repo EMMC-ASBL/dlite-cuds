@@ -74,6 +74,7 @@ class GraphSaveStrategy:
             session: A session-specific dictionary context.
 
         Returns:
+           session: Updated session with saved graph.
 
         """
         # Check for session:

@@ -70,8 +70,11 @@ jobs:
 
     # Ignore ID 44715 for now.
     # See this NumPy issue for more information: https://github.com/numpy/numpy/issues/19038
+    # Ignore ID 51668 for now.
+    # This is a subdependency.
+    # Ignore ID 48547, because of RDFLIB.
     - name: Run safety
-      run: pip freeze | safety check --stdin --ignore 44715
+      run: pip freeze | safety check --stdin --ignore 44715 --ignore 51668 --ignore 48547
 
   pytest:
     name: pytest (${{ matrix.os[1] }}-py${{ matrix.python-version }})

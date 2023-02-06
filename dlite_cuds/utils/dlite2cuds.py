@@ -65,10 +65,10 @@ def create_cuds_from_instance(graph, instance, relation, pred_v=None):
     """
     The graph in input must contain the mapping of the entity
     Arguments:
-        - graph: extracted from the collection entity
-        - instance: DLite instance to be converted to serrialized cuds
-        - relation: relation to consider to
-        - pred_v: ontological concept for value, defaults to EMMO:hasQuantityValue
+        graph: extracted from the collection entity
+        instance: DLite instance to be converted to serrialized cuds
+        relation: relation to consider
+        pred_v: ontological concept for value, defaults to owl#topDataProperty
 
     returns a list of triples
     """

@@ -20,10 +20,10 @@ def cuds2dlite(
     """
     Make a dlite entity and a mapping from cuds present in the graph
     Arguments:
-       graph
-       cuds_class
-       cuds_relations
-       uri
+       graph: Graph with CUDS class
+       cuds_class: CUDS class to be extracted
+       cuds_relations: relations to consider
+       uri: uri of datamodel to be created
     """
     # Query the graph to get the list of subjects that are defined as cudsClass
     list_objects = get_list_class(graph, cuds_class)
