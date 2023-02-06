@@ -5,6 +5,7 @@ import warnings
 from pathlib import Path
 
 from rdflib import Graph
+from simphony_osp.tools.pico import install
 
 from dlite_cuds.utils.cuds2dlite import cuds2dlite
 from dlite_cuds.utils.rdf import get_graph
@@ -19,9 +20,10 @@ def test_create_entity(
     Currently this test does nothing
     """
 
-    ontologyfile = (
-        repo_dir / "tests" / "inputfiles_dlite2cuds" / "ontology" / "chemistry.ttl"
-    )
+    # Installation of ontologies should be adde to fixtures
+    install(repo_dir / "tests" / "ontologies" / "chemistry.ttl.yml")
+    install(repo_dir / "tests" / "ontologies" / "mapsTo.ttl.yml")
+    ontologyfile = repo_dir / "tests" / "ontologies" / "chemistry.ttl"
     cudsfile = repo_dir / "tests" / "inputfiles_cuds2dlite" / "cuds.ttl"
     cuds_class = (
         "http://onto-ns.com/ontology/chemistry"

@@ -6,6 +6,7 @@ from pathlib import Path
 import dlite
 from rdflib import Graph
 from simphony_osp.tools import import_file, pretty_print
+from simphony_osp.tools.pico import install
 
 from dlite_cuds.utils.dlite2cuds import create_cuds_from_collection
 
@@ -26,6 +27,9 @@ def test_dlite2cuds(
     molecule_data_path = (
         repo_dir / "tests" / "inputfiles_dlite2cuds" / "substance_data.json"
     )
+    # Installation of ontologies should be adde to fixtures
+    install(repo_dir / "tests" / "ontologies" / "chemistry.ttl.yml")
+    install(repo_dir / "tests" / "ontologies" / "mapsTo.ttl.yml")
 
     # Molecule with dimensions greater than one (i.e. arrays or lists)
     # molecule_path =   "inputfiles_dlite2cuds/entities/Molecule.json"
