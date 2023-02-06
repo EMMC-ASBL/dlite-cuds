@@ -36,6 +36,7 @@ jobs:
         #    invoke="${line}"
         #  fi
         #done < requirements_docs.txt
+        pip install -e .[dev]
         pip install -e .[docs]
         # pip install ${pre_commit} ${invoke}
 
@@ -60,6 +61,7 @@ jobs:
         python -m pip install -U pip
         pip install -U setuptools wheel
         #pip install -U -r requirements.txt -r requirements_dev.txt -r requirements_docs.txt
+        pip install -e .[dev]
         pip install -e .[docs]
         pip install safety
 
