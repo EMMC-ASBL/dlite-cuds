@@ -1,7 +1,6 @@
 identifier: chem
 ontology_file: chemistry.ttl
 format: "text/turtle"
-reference_by_label: True
 requirements:
   - emmo
 namespaces:
