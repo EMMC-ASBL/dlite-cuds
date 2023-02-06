@@ -31,7 +31,7 @@ def _get_instances(collection: dict):
     """get the instances referred to in the collection"""
     list_instances = []
 
-    for (_, pred, obj) in collection["properties"]["relations"]:
+    for _, pred, obj in collection["properties"]["relations"]:
         if pred == "_has-uuid":
             inst0 = dlite.get_instance(obj)
             list_instances.append(inst0)
@@ -45,12 +45,12 @@ def compare_collection_asdict(coll1: dict, coll2: dict):
     # assert coll1["dimensions"]["nrelations"] == coll2["dimensions"]["nrelations"]
 
     list_coll1 = []
-    for (sub, pred, obj) in coll1["properties"]["relations"]:
+    for sub, pred, obj in coll1["properties"]["relations"]:
         if pred != "_has-uuid":
             list_coll1.append((sub, pred, obj))
 
     list_coll2 = []
-    for (sub, pred, obj) in coll2["properties"]["relations"]:
+    for sub, pred, obj in coll2["properties"]["relations"]:
         if pred != "_has-uuid":
             list_coll2.append((sub, pred, obj))
 

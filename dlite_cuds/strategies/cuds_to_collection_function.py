@@ -89,7 +89,6 @@ class CollectionFunctionStrategy:
         self,
         session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
     ) -> SessionUpdate:
-
         """Initialize."""
         return SessionUpdate()
 

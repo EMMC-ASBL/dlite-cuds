@@ -33,7 +33,7 @@ def create_cuds_from_collection(collection, entity_collection, relation):
     list_label_meta = get_list_sub_obj(graph=graph_collection)
     # check that all instances of the collection have the same meta_data
     entity_uri = None
-    for (_, meta) in list_label_meta:
+    for _, meta in list_label_meta:
         if entity_uri is None:
             entity_uri = meta
         elif meta != entity_uri:
