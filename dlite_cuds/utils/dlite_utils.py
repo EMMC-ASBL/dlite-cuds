@@ -77,9 +77,9 @@ def get_type_unit_list(entity):
     dict0 = {}
     for prop in entity.properties["properties"]:
         name = prop.name
-        # unit = prop.unit
+        unit = prop.unit
         datatype = prop.type
-        dict0[name] = {"type": datatype}  # dict0[name]={'unit':unit,'type':datatype}
+        dict0[name] = {"unit": unit, "type": datatype}
 
     return dict0
 

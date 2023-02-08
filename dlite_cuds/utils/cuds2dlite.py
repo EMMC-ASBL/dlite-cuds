@@ -36,7 +36,6 @@ def cuds2dlite(
     # Get the list of properties
     # Include check if all the objects of the class have the same properties
     list_prop = None
-    print("list_objects***", list_objects)
     for obj in list_objects:
         list_prop_0 = get_object_props_name(graph, obj, cuds_relations)
 
@@ -85,9 +84,7 @@ def cuds2dlite(
 
     datamodel = DataModel(uri=uri, description=description)
     if list_prop:
-        for prop in set(
-            list_prop
-        ):  # Should count the number of times the prop comes up to add shape maybe?
+        for prop in set(list_prop):
             print("prop", prop)
             prop_name = prop.split("#")[1]
             prop_type = list_prop_data[prop]["datatype"]  # "float"

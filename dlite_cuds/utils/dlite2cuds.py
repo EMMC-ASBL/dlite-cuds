@@ -8,7 +8,7 @@ from rdflib import Literal, URIRef
 from rdflib.namespace import XSD
 
 from dlite_cuds.utils.dlite_utils import get_type_unit_list
-from dlite_cuds.utils.rdf import (  # get_unique_triple,
+from dlite_cuds.utils.rdf import (
     get_graph_collection,
     get_list_instance_uuid,
     get_list_sub_obj,
@@ -146,7 +146,6 @@ def get_triple_instance(graph, instance):
     """
     Get the list of triples defining a property as a cuds (inverse_of is not included)
     """
-    # import pprint
     predicate_maps_to = "http://emmo.info/domain-mappings#mapsTo"
 
     all_mapped_uri = get_objects(graph, instance.meta.uri, predicate=predicate_maps_to)
@@ -173,6 +172,12 @@ def get_triple_instance(graph, instance):
 def get_triples_property(prop_name, namespace, value, etype, pred_v=None):  # unit
     """
     Get the list of triples defining a property as a cuds (inverse_of is not included)
+    Arguments:
+    prop_name: property bane
+    namespace: namespace
+    value: value
+    etype: type of value
+    pred_v: predicate used for assigning DataProperty, defaults to owl:topDataProperty
     """
     triples_prop = []
     cuds_prefix = "http://www.osp-core.com/cuds#"

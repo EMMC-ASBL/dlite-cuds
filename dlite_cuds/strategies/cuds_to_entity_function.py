@@ -66,7 +66,7 @@ class EntityConfig(AttrDict):
     )
 
     namespace: str = Field(
-        "http://www.namespace.no",  # Should be changed to DLite default namespace
+        "http://onto-ns.com/meta",
         description=("Namespace of the DLite entity"),
     )
 

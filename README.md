@@ -4,9 +4,10 @@
 
 The implementations has some severe restrictions for now:
 
-* An individual can only be an rdf:type of one class (i.e. it cannot be for instance both an rdf:type :Human and rdf:type Mother)
+* An individual can only be an rdf:type of one class (i.e. it cannot be for instance both an rdf:type :Human and rdf:type Mother).
+In theory, it should not be a limitation but the current implementation does not allow it.
 
-* All individuals of the same type must have the exact same properties defined.
+* All individuals of the same type must have the exact same properties defined. Incomplete individuals are not accepted (i.e. individuals missing a property).
 
 Restrictions on Dlite Models etc:
 
@@ -14,8 +15,10 @@ Restrictions on Dlite Models etc:
 
 * Not only properties must be mapped, but also the concepts/entities themselves.
 
-* Only single value data are supported (dimensionality in Dlite DataModel not yet implemented)
+* Every data provided need to be linked to a concept to be added to the graph.
 
+* Only single value data are supported (dimensionality in Dlite DataModel not yet implemented).
+The type of the values is also limited to standard types (str, int, ...)
 
 An OTEAPI Plugin with OTE strategies.
 

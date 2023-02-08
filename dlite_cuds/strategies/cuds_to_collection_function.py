@@ -169,7 +169,6 @@ class CollectionFunctionStrategy:
             graph, entity.uri, predicate="http://emmo.info/domain-mappings#mapsTo"
         )
 
-        # cuds_class = self.function_config.configuration.cudsClass
         cuds_relations = self.function_config.configuration.cudsRelations
 
         # check that the entity is actually mapped to the specified class, missing
@@ -178,7 +177,7 @@ class CollectionFunctionStrategy:
         listdatums = get_list_class(graph, cuds_class)
 
         # create the collection
-        coll = dlite.Collection()  # not a good idea to use: id='dataset')
+        coll = dlite.Collection()
 
         # to make it lives longer, to avoid that
         # it is freed when exiting that function
@@ -186,7 +185,6 @@ class CollectionFunctionStrategy:
 
         # loop to create and populate the entities
         for idatum, datum in enumerate(listdatums):
-            # e.g. http://www.osp-core.com/cuds#eb75e4d8-007b-432d-a643-b3a1004b74e1
             # create the instance of the entity
             # WARNING with assume that this entity class do not need dimensions
             datum0 = entity()

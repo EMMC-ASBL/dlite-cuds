@@ -87,21 +87,10 @@ def get_objects(
     predicate_m = "<" + predicate + ">"
     subj_m = "<" + subj + ">"
     query = f"""SELECT ?o WHERE {{ {subj_m} {predicate_m} ?o . }}"""
-    # print('getobjects before query')
-    # print('s', subj_m)
-    # print('p',predicate_m)
-
-    # for g in graph:
-    #    pprint.pprint(g)
-    #
     qres = graph.query(query)
-    # print(len(qres))
-    # print('query', query)
-    # print('graph',graph)
     if debug:
         print(query, len(qres))
 
-    # print('get_objects after query', len(qres))
     if len(qres) == 0:
         if dtype:
             return None, None

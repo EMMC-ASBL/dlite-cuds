@@ -40,7 +40,8 @@ def test_create_entity(
     entity, triples = cuds2dlite(graph, cuds_class, cuds_relations, uri)
 
     assert triples  # Need to make proper tests to check content of both
-
+    # Currently test save entity for manual testing.
+    # Should change this to actual validation.
     entity.save("json", f"{repo_dir}/datamodel_output.json", "mode=w")
 
 
