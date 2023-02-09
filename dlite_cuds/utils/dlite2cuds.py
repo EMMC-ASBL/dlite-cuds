@@ -1,6 +1,6 @@
 """ Converting dlite collection to cuds."""
 import uuid
-from typing import Optional
+from typing import Optional, Union
 
 import dlite
 from dlite import Collection
@@ -169,15 +169,21 @@ def get_triple_instance(graph, instance):
     return triple
 
 
-def get_triples_property(prop_name, namespace, value, etype, pred_v=None):  # unit
+def get_triples_property(
+    prop_name: str,
+    namespace: str,
+    value: Union[str, int, float],
+    etype: str,
+    pred_v: Optional[str] = None,
+):
     """
     Get the list of triples defining a property as a cuds (inverse_of is not included)
     Arguments:
-    prop_name: property bane
-    namespace: namespace
-    value: value
-    etype: type of value
-    pred_v: predicate used for assigning DataProperty, defaults to owl:topDataProperty
+        prop_name: property bane
+        namespace: namespace
+        value: value
+        etype: type of value
+        pred_v: predicate used for assigning DataProperty, defaults to owl:topDataProperty
     """
     triples_prop = []
     cuds_prefix = "http://www.osp-core.com/cuds#"
@@ -215,5 +221,4 @@ def get_object_typed(value, etype):
     if etype in ["float32", "float64"]:
         return Literal(value, datatype=XSD.float)
 
-    print(etype, value)
     raise ValueError("in get_object_typed, etype not recognized: ", etype)

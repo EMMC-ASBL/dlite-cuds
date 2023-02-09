@@ -42,14 +42,12 @@ def cuds2dlite(
         if list_prop is None:
             list_prop = list_prop_0
             list_prop_uri = get_object_props_uri(graph, obj, cuds_relations)
-            print("list_prop_uri", list_prop_uri)
         else:
             # compare the two lists
             if list_prop != list_prop_0:
                 raise DLiteCUDSError(
                     f"Error: the list of properties is not the same: {list_prop_0}"
                 )
-    print("list_prop_uri", list_prop_uri)
     # Fetch the unit and values
     # That the CUDS is consitent and that all similar properties have the
     # same unit and type is assumed
@@ -57,7 +55,6 @@ def cuds2dlite(
     for prop_uri in list_prop_uri:
         prop = get_value_prop(graph, prop_uri)
         dict_0 = {}
-        print("prop", prop)
         for key in prop:  # pylint: disable=consider-using-dict-items
             if key != "concept":
                 dict_0[key] = prop[key]
@@ -85,7 +82,6 @@ def cuds2dlite(
     datamodel = DataModel(uri=uri, description=description)
     if list_prop:
         for prop in set(list_prop):
-            print("prop", prop)
             prop_name = prop.split("#")[1]
             prop_type = list_prop_data[prop]["datatype"]  # "float"
             if prop_type == "integer":
