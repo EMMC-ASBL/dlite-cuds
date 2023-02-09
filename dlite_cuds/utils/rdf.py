@@ -27,9 +27,7 @@ def get_graph_collection(collection):
     return graph
 
 
-def get_list_sub_obj(
-    graph, predicate="_has-meta"
-):
+def get_list_sub_obj(graph, predicate="_has-meta"):
     """Get list class"""
     predicate_m = "<" + predicate + ">"
     is_class_query = f"""SELECT ?s ?o WHERE {{ ?s {predicate_m} ?o . }}"""
@@ -38,7 +36,7 @@ def get_list_sub_obj(
 
     list_sub_obj = []
     for row in qres:
-        list_sub_obj.append((str(row.s),str(row.o)))
+        list_sub_obj.append((str(row.s), str(row.o)))
     return list_sub_obj
 
 
@@ -89,7 +87,6 @@ def get_objects(
     predicate_m = "<" + predicate + ">"
     subj_m = "<" + subj + ">"
     query = f"""SELECT ?o WHERE {{ {subj_m} {predicate_m} ?o . }}"""
-
     qres = graph.query(query)
     if debug:
         print(query, len(qres))
@@ -104,7 +101,9 @@ def get_objects(
         obj_list.append(str(row.o))
         if dtype:
             if "_datatype" in dir(row["o"]):
-                data_type_list.append(row["o"]._datatype.split("#")[1])
+                data_type_list.append(
+                    row["o"]._datatype.split("#")[1]  # pylint: disable=protected-access
+                )
             else:
                 data_type_list.append("")
     if dtype:
@@ -140,7 +139,9 @@ def get_unique_triple(
         obj = str(row.o)
         if dtype:
             if "_datatype" in dir(row["o"]):
-                datatype = row["o"]._datatype.split("#")[1]
+                datatype = row["o"]._datatype.split(  # pylint: disable=protected-access
+                    "#"
+                )[1]
 
             else:
                 datatype = None
@@ -204,7 +205,9 @@ def get_object_props_uri(graph, subj, relations):
 def get_value_prop(
     graph,
     prop_uri,
-    value_predicate="http://www.myonto.com/onto#value", #Should probably not have a default
+    #
+    value_predicate="http://www.w3.org/2002/07/owl#topDataProperty"
+    # Should maybe not have a default?
 ):
     """Return a dict containing the concept, the value and the unit
     if the property is missing one of this element, return an empty dict
@@ -241,8 +244,9 @@ def get_object_props_name(graph, object_uri, relations):
     return list_prop
 
 
-def get_unique_prop_fromlist_uri(graph,listsubj,obj,
-                    predicate="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"):
+def get_unique_prop_fromlist_uri(
+    graph, listsubj, obj, predicate="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+):
     """
     From a list of URI, check if only one of the propURI is of type obj.
     Then return that propURI
@@ -251,9 +255,9 @@ def get_unique_prop_fromlist_uri(graph,listsubj,obj,
     predicatem = "<" + predicate + ">"
     objm = "<" + obj + ">"
     # build value list from relations
-    valuelist =""
+    valuelist = ""
     for subj in listsubj:
-        valuelist+= " <" + subj + "> "
+        valuelist += " <" + subj + "> "
     valuelist = "VALUES ?s { " + valuelist + " }"
 
     query = f"""SELECT ?s WHERE {{ {valuelist} ?s {predicatem} {objm} . }}"""

@@ -25,19 +25,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
 
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
-            pre_commit="${line}"
-          fi
-        done < requirements_dev.txt
+        #while IFS="" read -r line || [ -n "${line}" ]; do
+        #  if [[ "${line}" =~ ^pre-commit.*$ ]]; then
+        #    pre_commit="${line}"
+        #  fi
+        #done < requirements_dev.txt
 
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^invoke.*$ ]]; then
-            invoke="${line}"
-          fi
-        done < requirements_docs.txt
-
-        pip install ${pre_commit} ${invoke}
+        #while IFS="" read -r line || [ -n "${line}" ]; do
+        #  if [[ "${line}" =~ ^invoke.*$ ]]; then
+        #    invoke="${line}"
+        #  fi
+        #done < requirements_docs.txt
+        pip install -e .[dev]
+        # pip install ${pre_commit} ${invoke}
 
     - name: Test with pre-commit
       run: SKIP=pylint,pylint-tests pre-commit run --all-files
@@ -59,20 +59,22 @@ jobs:
       run: |
         python -m pip install -U pip
         pip install -U setuptools wheel
-        pip install -U -r requirements.txt -r requirements_dev.txt -r requirements_docs.txt
-        pip install -e .
+        pip install -e .[dev]
         pip install safety
 
     - name: Run pylint
       run: pylint --rcfile=pyproject.toml --ignore-paths=tests/ --extension-pkg-whitelist='pydantic' *.py dlite_cuds
 
     - name: Run pylint - tests
-      run: pylint --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=import-outside-toplevel,redefined-outer-name,import-error tests
+      run: pylint --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=import-outside-toplevel,redefined-outer-name,import-error tests --recursive=yes
 
     # Ignore ID 44715 for now.
     # See this NumPy issue for more information: https://github.com/numpy/numpy/issues/19038
+    # Ignore ID 51668 for now.
+    # This is a subdependency.
+    # Ignore ID 48547, because of RDFLIB.
     - name: Run safety
-      run: pip freeze | safety check --stdin --ignore 44715
+      run: pip freeze | safety check --stdin --ignore 44715 --ignore 51668 --ignore 48547
 
   pytest:
     name: pytest (${{ matrix.os[1] }}-py${{ matrix.python-version }})
@@ -159,7 +161,7 @@ jobs:
       run: |
         python -m pip install -U pip
         pip install -U setuptools wheel
-        pip install -e .[docs]
+        pip install -e .[doc]
 
     - name: Build
       run: |

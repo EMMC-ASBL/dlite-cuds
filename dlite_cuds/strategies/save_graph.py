@@ -22,14 +22,10 @@ class GraphSaveConfig(AttrDict):
         description=("Destination for saving the Graph"),
     )
 
-    cache_key: Optional[str] = Field(
-        "",
-        description=("Cache key of the graph to save")
-    )
+    cache_key: Optional[str] = Field("", description="Cache key of the graph to save")
 
     graph_sessionKey: Optional[str] = Field(
-        "",
-        description=("Session key of graph to save")
+        "", description=("Session key of graph to save")
     )
 
     datacache_config: Optional[DataCacheConfig] = Field(
@@ -39,6 +35,7 @@ class GraphSaveConfig(AttrDict):
             "content."
         ),
     )
+
 
 class GraphSaveFunctionConfig(FunctionConfig):
     """File save strategy filter config."""
@@ -64,7 +61,10 @@ class GraphSaveStrategy:
 
     save_config: GraphSaveFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
@@ -74,6 +74,7 @@ class GraphSaveStrategy:
             session: A session-specific dictionary context.
 
         Returns:
+           session: Updated session with saved graph.
 
         """
         # Check for session:
@@ -85,14 +86,17 @@ class GraphSaveStrategy:
                 if self.save_config.configuration.graph_sessionKey in session:
                     cache_key = session[self.save_config.configuration.graph_sessionKey]
                 else:
-                    raise DLiteCUDSError("graph_sessionKey not in session!: ",
-                                        self.save_config.configuration.graph_sessionKey)
+                    raise DLiteCUDSError(
+                        "graph_sessionKey not in session!: ",
+                        self.save_config.configuration.graph_sessionKey,
+                    )
             else:
                 if "graph_cache_key" in session:
                     cache_key = session["graph_cache_key"]
                 else:
-                    raise DLiteCUDSError("graph_cache_key not in session "
-                                           "and no valid cache_key!")
+                    raise DLiteCUDSError(
+                        "graph_cache_key not in session and no valid cache_key!"
+                    )
         else:
             cache_key = self.save_config.configuration.cache_key
 
@@ -103,16 +107,17 @@ class GraphSaveStrategy:
         graph_cache = cache.get(cache_key)
 
         # Create the directory if it does not exist
-        os.makedirs(os.path.dirname(self.save_config.configuration.fileDestination),
-                                    exist_ok=True)
+        os.makedirs(
+            os.path.dirname(self.save_config.configuration.fileDestination),
+            exist_ok=True,
+        )
 
         # Save the graph to a file
-        with open(self.save_config.configuration.fileDestination, mode="w+",
-                    encoding="UTF-8") as file:
+        with open(
+            self.save_config.configuration.fileDestination, mode="w+", encoding="UTF-8"
+        ) as file:
             file.write(graph_cache)
 
-
         return SessionUpdateGraphSave(
-            **{
-            },
+            **{},
         )

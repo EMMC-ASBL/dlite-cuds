@@ -1,0 +1,7 @@
+identifier: mapsTo
+ontology_file: mapsTo.ttl
+format: "text/turtle"
+requirements:
+  - emmo
+namespaces:
+  mapsTo: http://onto-ns.com/ontology/mapsTo

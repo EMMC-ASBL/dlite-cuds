@@ -2,7 +2,10 @@
 Module to extract information from a serialized CUDS and create instances.
 """
 
+from typing import List
+
 from dlite.datamodel import DataModel
+from rdflib.graph import Graph
 
 from dlite_cuds.utils.rdf import (
     get_list_class,
@@ -14,13 +17,22 @@ from dlite_cuds.utils.rdf import (
 from dlite_cuds.utils.utils import DLiteCUDSError
 
 
-def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-many-locals
+def cuds2dlite(
+    graph: Graph,
+    cuds_class: str,
+    cuds_relations: List[str],
+    uri: str,
+):  # pylint: disable=too-many-locals
     """
     Make a dlite entity and a mapping from cuds present in the graph
+    Arguments:
+       graph: Graph with CUDS class
+       cuds_class: CUDS class to be extracted
+       cuds_relations: relations to consider
+       uri: uri of datamodel to be created
     """
     # Query the graph to get the list of subjects that are defined as cudsClass
     list_objects = get_list_class(graph, cuds_class)
-
     # Get the list of properties
     # Include check if all the objects of the class have the same properties
     list_prop = None
@@ -36,7 +48,6 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
                 raise DLiteCUDSError(
                     f"Error: the list of properties is not the same: {list_prop_0}"
                 )
-
     # Fetch the unit and values
     # That the CUDS is consitent and that all similar properties have the
     # same unit and type is assumed
@@ -48,7 +59,6 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
             if key != "concept":
                 dict_0[key] = prop[key]
         list_prop_data[prop["concept"]] = dict_0
-
 
     # go through the instances and get all their related instances
     # get the class of the related instances for dlite mapping
@@ -71,9 +81,11 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
 
     datamodel = DataModel(uri=uri, description=description)
     if list_prop:
-        for prop in list_prop:
+        for prop in set(list_prop):
             prop_name = prop.split("#")[1]
             prop_type = list_prop_data[prop]["datatype"]  # "float"
+            if prop_type == "integer":
+                prop_type = "int"
             # prop_unit = list_prop_data[prop]["unit"]
             prop_description = "...default"
             prop_description = get_unique_triple(graph, prop, predicate_description)
@@ -101,15 +113,16 @@ def cuds2dlite(graph, cuds_class, cuds_relations, uri): # pylint: disable=too-ma
     return entity, triples
 
 
-def triple_to_spo(triple:str):
+def triple_to_spo(triple: str):
     """
     Split the triple string into subject, predicate, object
     """
-    listsegments = triple.replace("<","").replace(">","").split()
-    sub,pred,obj = listsegments[0],listsegments[1],listsegments[2]
-    return sub,pred,obj
+    listsegments = triple.replace("<", "").replace(">", "").split()
+    sub, pred, obj = listsegments[0], listsegments[1], listsegments[2]
+    return sub, pred, obj
 
-def spo_to_triple(sub:str,pred:str,obj:str):
+
+def spo_to_triple(sub: str, pred: str, obj: str):
     """
     Merge the subject, predicate, object into a triple
     """

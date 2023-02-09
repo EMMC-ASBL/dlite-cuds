@@ -51,8 +51,9 @@ class CollectionConfig(AttrDict):
     entity_collection_id: Optional[str] = Field(
         None,
         description="id of the collection that contains the entity and"
-                         "the mapping relations."
+        "the mapping relations.",
     )
+
 
 class CollectionFunctionConfig(FunctionConfig):
     """Function filter config."""
@@ -69,9 +70,7 @@ class SessionUpdateCollectionFunction(SessionUpdate):
     """Class for returning values when converting from CUDS to Collection."""
 
     graph_cache_key: str = Field(..., description="Cache key to graph.")
-    collection_id: str = Field(
-        ..., description="Collection uri."
-    )
+    collection_id: str = Field(..., description="Collection uri.")
 
 
 @dataclass
@@ -86,14 +85,16 @@ class CollectionFunctionStrategy:
 
     function_config: CollectionFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
-
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
     def get(
-        self, session: "Optional[Dict[str, Any]]" = None # pylint: disable=unused-argument
-
+        self,
+        session: "Optional[Dict[str, Any]]" = None,
     ) -> SessionUpdateCollectionFunction:
         """Parse CUDS.
         Arguments:
@@ -132,13 +133,13 @@ class CollectionFunctionStrategy:
         if self.function_config.configuration.entity_collection_id is None:
             key = "entity_collection_id"
             if key in session:
-                entity_collection = dlite.get_instance( \
-                    session.get(key))
+                entity_collection = dlite.get_instance(session.get(key))
             else:
                 raise DLiteCUDSError(f"Missing {key}")
         else:
-            entity_collection = dlite.get_instance( \
-                self.function_config.configuration.entity_collection_id)
+            entity_collection = dlite.get_instance(
+                self.function_config.configuration.entity_collection_id
+            )
 
         # get the entity
         list_instances = _get_instances(entity_collection.asdict())
@@ -164,38 +165,35 @@ class CollectionFunctionStrategy:
 
         # the object should normally come from the entity mapping
         # but it might be unique so...
-        cuds_class = get_unique_triple(graph,
-                                      entity.uri,
-                predicate="http://emmo.info/domain-mappings#mapsTo")
+        cuds_class = get_unique_triple(
+            graph, entity.uri, predicate="http://emmo.info/domain-mappings#mapsTo"
+        )
 
-        #cuds_class = self.function_config.configuration.cudsClass
         cuds_relations = self.function_config.configuration.cudsRelations
 
         # check that the entity is actually mapped to the specified class, missing
 
         # get the list of datum (cuds object isA cuds_class)
-        listdatums = get_list_class(graph,cuds_class)
+        listdatums = get_list_class(graph, cuds_class)
 
         # create the collection
-        coll = dlite.Collection()   # not a good idea to use: id='dataset')
+        coll = dlite.Collection()
 
         # to make it lives longer, to avoid that
         # it is freed when exiting that function
-        coll._incref() # pylint: disable=protected-access
-
+        coll._incref()  # pylint: disable=protected-access
 
         # loop to create and populate the entities
-        for idatum,datum in enumerate(listdatums):
-            # e.g. http://www.osp-core.com/cuds#eb75e4d8-007b-432d-a643-b3a1004b74e1
+        for idatum, datum in enumerate(listdatums):
             # create the instance of the entity
             # WARNING with assume that this entity class do not need dimensions
             datum0 = entity()
             uridatum = datum0.meta.uri
 
             # get the list of properties for that datum cuds object
-            listprop = get_object_props_uri(graph,datum,cuds_relations)
+            listprop = get_object_props_uri(graph, datum, cuds_relations)
 
-            for propname,propdata in dictprop.items():
+            for propname, propdata in dictprop.items():
                 # build the uri of the property
                 # e.g. http://www.myonto.eu/0.1/Concept#property
                 uriprop = uridatum + "#" + propname
@@ -204,17 +202,17 @@ class CollectionFunctionStrategy:
                 # e.g. http://www.osp-core.com/mycase#property
                 # Need a test to check that the property is available
                 # if not we keep the default value from Dlite
-                concepturi = get_unique_triple(graph,uriprop,predicatemapsto)
+                concepturi = get_unique_triple(graph, uriprop, predicatemapsto)
 
                 # find the uri of the property that is_a propURI
                 # AND is in relation with datum
                 # e.g. http://www.osp-core.com/cuds#1130eafc-2fb0-45f2-83ac-72ce9f35e987
-                propuri = get_unique_prop_fromlist_uri(graph,listprop,concepturi)
+                propuri = get_unique_prop_fromlist_uri(graph, listprop, concepturi)
 
                 # Add a test if propuri is None
 
                 # find the property value and unit for that datum
-                dataprop = get_value_prop(graph,propuri)
+                dataprop = get_value_prop(graph, propuri)
 
                 # assert if the unit are matching
                 # if dataprop['unit'] != propdata['unit']:
@@ -223,12 +221,12 @@ class CollectionFunctionStrategy:
                 #     " entity: ",propdata['unit'])
 
                 # affect the value to the instance
-                datum0[propname] = convert_type(dataprop['value'],propdata["type"])
+                datum0[propname] = convert_type(dataprop["value"], propdata["type"])
 
             # define a label for the Dlite collection
             # the label is only an internal reference in the collection
             # and so not valid outside. It is then possible to use some simple labels.
-            label = 'datum_'+str(idatum)
+            label = "datum_" + str(idatum)
 
             # add the instances to the collection
             # it will add a set of relations descripting the instance of Dlite entity

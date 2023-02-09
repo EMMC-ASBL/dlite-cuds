@@ -16,3 +16,14 @@ def load_plugins() -> None:
 def repo_dir() -> Path:
     """Absolute path to the repository directory."""
     return Path(__file__).parent.parent.resolve()
+
+
+@pytest.fixture
+def tmpdir() -> Path:
+    """Create a temporary directory that lasts the runtime of the test."""
+    from tempfile import TemporaryDirectory
+
+    res = TemporaryDirectory()  # pylint: disable=consider-using-with
+
+    yield Path(res.name)
+    res.cleanup()

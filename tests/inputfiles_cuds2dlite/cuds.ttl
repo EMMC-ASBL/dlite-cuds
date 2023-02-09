@@ -1,0 +1,13 @@
+@prefix ns1: <http://emmo.info/emmo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.osp-core.com/cuds#fdb00791-278d-5b10-beb1-4c418681b5c3> a <http://onto-ns.com/ontology/chemistry#EMMO_fd9be2ac_477a_44b2_b9b0_f7c1d369ae81> ;
+    ns1:EMMO_e1097637_70d2_4895_973f_2396f04fa204 <http://www.osp-core.com/cuds#4b21ed44-b23f-4341-9ded-a95c74e2c115>,
+        <http://www.osp-core.com/cuds#86931956-f7a5-4d31-a8d5-a44f49a49ace> .
+
+<http://www.osp-core.com/cuds#4b21ed44-b23f-4341-9ded-a95c74e2c115> a <http://onto-ns.com/ontology/chemistry#EMMO_99f2309f_e920_4c96_afba_493ca92182e0> ;
+    owl:topDataProperty "CH4"^^xsd:string .
+
+<http://www.osp-core.com/cuds#86931956-f7a5-4d31-a8d5-a44f49a49ace> a <http://onto-ns.com/ontology/chemistry#EMMO_f57da558_e5b0_4ddb_b791_2878e58ec324> ;
+    owl:topDataProperty "1.8667"^^xsd:float .

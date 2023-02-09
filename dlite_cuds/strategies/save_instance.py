@@ -23,19 +23,15 @@ class InstanceSaveConfig(AttrDict):
         description=("Destination for saving the instance"),
     )
 
-    instanceId: Optional[str] = Field(
-        "",
-        description=("Id of instance to save")
-    )
+    instanceId: Optional[str] = Field("", description="Id of instance to save")
 
     instanceKey: Optional[str] = Field(
-        "",
-        description=("Session key of instance to save")
+        "", description=("Session key of instance to save")
     )
 
     format: Optional[str] = Field(
         "instance",
-        description=("Selection of the format, either instance or collection")
+        description=("Selection of the format, either instance or collection"),
     )
 
 
@@ -64,7 +60,10 @@ class InstanceSaveStrategy:
 
     save_config: InstanceSaveFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
@@ -76,6 +75,7 @@ class InstanceSaveStrategy:
         Returns:
             instance_key_dict: dict of instance keys/labels
         """
+        # pylint: disable=too-many-branches
         # Check for session:
         if session is None:
             raise DLiteCUDSError("Missing session")
@@ -85,8 +85,10 @@ class InstanceSaveStrategy:
                 if self.save_config.configuration.instanceKey in session:
                     instance_id = session[self.save_config.configuration.instanceKey]
                 else:
-                    raise DLiteCUDSError("instanceKey not in session!: ",
-                                            self.save_config.configuration.instanceKey)
+                    raise DLiteCUDSError(
+                        "instanceKey not in session!: ",
+                        self.save_config.configuration.instanceKey,
+                    )
             else:
                 if "collection_id" in session:
                     instance_id = session["collection_id"]
@@ -103,32 +105,42 @@ class InstanceSaveStrategy:
         if self.save_config.configuration.format == "dlitesave":
             inst_dict = json.loads(inst.asjson())
             # Create the directory if it does not exist
-            os.makedirs(os.path.dirname(self.save_config.configuration.fileDestination),
-                                    exist_ok=True)
-            inst.save('json://'+self.save_config.configuration.fileDestination+'?mode=w')
+            os.makedirs(
+                os.path.dirname(self.save_config.configuration.fileDestination),
+                exist_ok=True,
+            )
+            inst.save(
+                "json://" + self.save_config.configuration.fileDestination + "?mode=w"
+            )
         else:
             if self.save_config.configuration.format == "instance":
                 inst_dict = inst.asdict()
             elif self.save_config.configuration.format == "collection":
                 dict0 = inst.asdict()
-                dict0.pop('uuid', None)
+                dict0.pop("uuid", None)
                 inst_dict = {}
                 inst_dict[inst.uuid] = dict0
             else:
-                raise DLiteCUDSError("Format need to be either instance"
-                                    " or collection, got instead: "
-                                    + str(self.save_config.configuration.format))
+                raise DLiteCUDSError(
+                    "Format need to be either instance"
+                    " or collection, got instead: "
+                    + str(self.save_config.configuration.format)
+                )
 
             # Create the directory if it does not exist
-            os.makedirs(os.path.dirname(self.save_config.configuration.fileDestination),
-                                        exist_ok=True)
+            os.makedirs(
+                os.path.dirname(self.save_config.configuration.fileDestination),
+                exist_ok=True,
+            )
 
             # Save the instance in a file
-            with open(self.save_config.configuration.fileDestination, mode="w+",
-                        encoding="UTF-8") as file:
-                json.dump(inst_dict,file,indent=4)
+            with open(
+                self.save_config.configuration.fileDestination,
+                mode="w+",
+                encoding="UTF-8",
+            ) as file:
+                json.dump(inst_dict, file, indent=4)
 
         return SessionUpdateInstanceSave(
-            **{
-            },
+            **{},
         )

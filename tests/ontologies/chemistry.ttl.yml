@@ -1,0 +1,7 @@
+identifier: chem
+ontology_file: chemistry.ttl
+format: "text/turtle"
+requirements:
+  - emmo
+namespaces:
+  chem: http://onto-ns.com/ontology/chemistry

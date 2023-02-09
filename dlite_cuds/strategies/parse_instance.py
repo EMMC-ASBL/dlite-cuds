@@ -23,7 +23,7 @@ class InstanceParseConfig(AttrDict):
 
     instanceId: str = Field(
         ...,
-        description=("Id of instance defined in the storage located at downloadUrl")
+        description=("Id of instance defined in the storage located at downloadUrl"),
     )
 
 
@@ -40,8 +40,10 @@ class InstanceParseResourceConfig(ResourceConfig):
 
 class SessionUpdateInstanceParse(SessionUpdate):
     """Class for returning values from Instance Parse."""
-    instance_key_dict: Dict[str, str] = Field(...,
-                description=("Dictionary of instance keys/labels - uuid"))
+
+    instance_key_dict: Dict[str, str] = Field(
+        ..., description=("Dictionary of instance keys/labels - uuid")
+    )
 
 
 @dataclass
@@ -56,11 +58,17 @@ class InstanceParseStrategy:
 
     parse_config: InstanceParseResourceConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def initialize(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Initialize."""
         return SessionUpdate()
 
-    def get(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate: # pylint: disable=unused-argument
+    def get(
+        self,
+        session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
+    ) -> SessionUpdate:
         """Parse Instance.
         Arguments:
             session: A session-specific dictionary context.
@@ -92,7 +100,5 @@ class InstanceParseStrategy:
         instance_key_dict[label] = inst.uuid
 
         return SessionUpdateInstanceParse(
-            **{
-                "instance_key_dict": instance_key_dict
-            },
+            **{"instance_key_dict": instance_key_dict},
         )

@@ -74,7 +74,6 @@ class CUDSParseStrategy:
         self,
         session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
     ) -> SessionUpdate:
-
         """Parse CUDS.
         Arguments:
             session: A session-specific dictionary context.
