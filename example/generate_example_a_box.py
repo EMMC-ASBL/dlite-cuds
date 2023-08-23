@@ -1,8 +1,10 @@
+"""Generates an example ABox"""
 from osp.core.utils import export_cuds
 from osp.core.namespaces import ex
 
 
 def generate_example():
+    """Generates and exports example ABox"""
     inst1 = ex.TypeOne(dpOne="a", dpTwo=1)
     inst2 = ex.TypeTwo(dpOne="b", dpTwo=5, dpThree=2.5)
     inst3 = ex.TypeThree(dpTwo=3)

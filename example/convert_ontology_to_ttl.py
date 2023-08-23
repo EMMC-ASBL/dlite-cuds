@@ -1,3 +1,4 @@
+"""Generates `ex` ontology ttl file"""
 import os
 import rdflib
 from osp.core.ontology.parser import OntologyParser
@@ -5,7 +6,7 @@ from osp.core.ontology import Ontology
 
 
 def export_ontology(ontology_namespace):
-
+    """Converts ex ontology to a ttl file and exports as ex.ttl"""
     ontology_graph = rdflib.graph.Graph()
     packages_path = os.path.expanduser(
         os.path.join('~', '.osp_ontologies')
