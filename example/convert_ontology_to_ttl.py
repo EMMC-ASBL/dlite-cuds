@@ -28,7 +28,7 @@ def export_ontology(ontology_namespace):
 
     result = ontology_graph.serialize(
         format="ttl", encoding='UTF-8').decode('UTF-8')
-    with open(export_file_path, 'w+') as file_handle:
+    with open(export_file_path, 'w+', encoding="utf-8") as file_handle:
         file_handle.write(result)
 
 
