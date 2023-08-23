@@ -1,0 +1,30 @@
+@prefix cuba: <http://www.osp-core.com/cuba#> .
+@prefix ex: <http://www.osp-core.com/ex#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+cuba:_serialization rdf:first "f817bd09-3945-4325-9a60-62ecca19ea3c" .
+
+<http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3> a ex:TypeThree ;
+    ex:dpTwo 3 ;
+    ex:iOPTwo <http://www.osp-core.com/cuds#f817bd09-3945-4325-9a60-62ecca19ea3c> .
+
+<http://www.osp-core.com/cuds#7dc3081f-72cb-4754-9623-e821b352fd14> a ex:TypeTwo ;
+    ex:dpOne "g"^^xsd:string ;
+    ex:dpThree "8.9"^^xsd:float ;
+    ex:dpTwo 4 ;
+    ex:iOPTwo <http://www.osp-core.com/cuds#db11661e-e815-4f36-b5a6-2bafe25f09b6> .
+
+<http://www.osp-core.com/cuds#db11661e-e815-4f36-b5a6-2bafe25f09b6> a ex:TypeTwo ;
+    ex:dpOne "b"^^xsd:string ;
+    ex:dpThree "2.5"^^xsd:float ;
+    ex:dpTwo 5 ;
+    ex:iOPOne <http://www.osp-core.com/cuds#f817bd09-3945-4325-9a60-62ecca19ea3c> ;
+    ex:opTwo <http://www.osp-core.com/cuds#7dc3081f-72cb-4754-9623-e821b352fd14> .
+
+<http://www.osp-core.com/cuds#f817bd09-3945-4325-9a60-62ecca19ea3c> a ex:TypeOne ;
+    ex:dpOne "a"^^xsd:string ;
+    ex:dpTwo 1 ;
+    ex:opOne <http://www.osp-core.com/cuds#db11661e-e815-4f36-b5a6-2bafe25f09b6> ;
+    ex:opTwo <http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3> .
+
