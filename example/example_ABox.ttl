@@ -27,4 +27,3 @@ cuba:_serialization rdf:first "f817bd09-3945-4325-9a60-62ecca19ea3c" .
     ex:dpTwo 1 ;
     ex:opOne <http://www.osp-core.com/cuds#db11661e-e815-4f36-b5a6-2bafe25f09b6> ;
     ex:opTwo <http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3> .
-

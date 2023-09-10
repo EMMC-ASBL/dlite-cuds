@@ -71,4 +71,3 @@
     rdfs:subPropertyOf ns2:activeRelationship ;
     owl:inverseOf <http://www.osp-core.com/ex#iOPOne> ;
     ns1:prefLabel "opOne"@en .
-

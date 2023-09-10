@@ -2,7 +2,6 @@ from pathlib import Path
 
 import dlite
 
-
 thisdir = Path(__file__).resolve().parent
 dlite.storage_path.append(thisdir)
 
@@ -25,7 +24,9 @@ inst2b.dpOne = "b"
 inst2b.dpTwo = 5
 inst2b.dpThree = 2.5
 
-inst3 = TypeThree(id="http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3")
+inst3 = TypeThree(
+    id="http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3"
+)
 inst3.dpTwo = 3
 
 
@@ -35,12 +36,12 @@ coll.add("inst2a", inst2a)
 coll.add("inst2b", inst2b)
 coll.add("inst3", inst3)
 
-#coll.add_relation(inst1.uri, "ex:opOne", inst2b.uri)
-#coll.add_relation(inst1.uri, "ex:opTwo", inst3.uri)
-#coll.add_relation(inst2a.uri, "ex:iOPTwo", inst2b.uri)
-#coll.add_relation(inst2b.uri, "ex:iOPOne", inst1.uri)
-#coll.add_relation(inst2b.uri, "ex:opTwo", inst2a.uri)
-#coll.add_relation(inst3.uri, "ex:iOPTwo", inst1.uri)
+# coll.add_relation(inst1.uri, "ex:opOne", inst2b.uri)
+# coll.add_relation(inst1.uri, "ex:opTwo", inst3.uri)
+# coll.add_relation(inst2a.uri, "ex:iOPTwo", inst2b.uri)
+# coll.add_relation(inst2b.uri, "ex:iOPOne", inst1.uri)
+# coll.add_relation(inst2b.uri, "ex:opTwo", inst2a.uri)
+# coll.add_relation(inst3.uri, "ex:iOPTwo", inst1.uri)
 
 coll.add_relation("inst1", "ex:opOne", "inst2b")
 coll.add_relation("inst1", "ex:opTwo", "inst3")
@@ -49,5 +50,5 @@ coll.add_relation("inst2b", "ex:iOPOne", "inst1")
 coll.add_relation("inst2b", "ex:opTwo", "inst2a")
 coll.add_relation("inst3", "ex:iOPTwo", "inst1")
 
-#coll.save("yaml", "instances.yaml", "mode=w")
+# coll.save("yaml", "instances.yaml", "mode=w")
 coll.save("json", "instances.json", "mode=w")
