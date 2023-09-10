@@ -1,0 +1,71 @@
+{
+  "f8e99b4f-4e0a-5bf5-be29-248964aa1f51":   {
+    "uri": "http://www.osp-core.com/cuds#db11661e-e815-4f36-b5a6-2bafe25f09b6",
+    "meta": "http://onto-ns.com/meta/0.1/TypeTwo",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "b",
+      "dpTwo": 5,
+      "dpThree": 2.5
+    }
+  },
+  "9cb54433-ba6d-4d8b-9fab-1cb4aba27dae":   {
+    "meta": "http://onto-ns.com/meta/0.1/Collection",
+    "dimensions": {
+      "nrelations": 18
+    },
+    "properties": {
+      "relations": [
+        ["inst1", "_is-a", "Instance"],
+        ["inst1", "_has-uuid", "2a917046-a0ba-5714-a9bf-f7f610f11451"],
+        ["inst1", "_has-meta", "http://onto-ns.com/meta/0.1/TypeOne"],
+        ["inst2a", "_is-a", "Instance"],
+        ["inst2a", "_has-uuid", "91eb70b8-5d79-54bc-b96c-fc9ee126672a"],
+        ["inst2a", "_has-meta", "http://onto-ns.com/meta/0.1/TypeTwo"],
+        ["inst2b", "_is-a", "Instance"],
+        ["inst2b", "_has-uuid", "f8e99b4f-4e0a-5bf5-be29-248964aa1f51"],
+        ["inst2b", "_has-meta", "http://onto-ns.com/meta/0.1/TypeTwo"],
+        ["inst3", "_is-a", "Instance"],
+        ["inst3", "_has-uuid", "cbc76b74-195c-5e77-855e-a1e434ce18c9"],
+        ["inst3", "_has-meta", "http://onto-ns.com/meta/0.1/TypeThree"],
+        ["inst1", "ex:opOne", "inst2b"],
+        ["inst1", "ex:opTwo", "inst3"],
+        ["inst2a", "ex:iOPTwo", "inst2b"],
+        ["inst2b", "ex:iOPOne", "inst1"],
+        ["inst2b", "ex:opTwo", "inst2a"],
+        ["inst3", "ex:iOPTwo", "inst1"]
+      ]
+    }
+  },
+  "2a917046-a0ba-5714-a9bf-f7f610f11451":   {
+    "uri": "http://www.osp-core.com/cuds#f817bd09-3945-4325-9a60-62ecca19ea3c",
+    "meta": "http://onto-ns.com/meta/0.1/TypeOne",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "a",
+      "dpTwo": 1
+    }
+  },
+  "91eb70b8-5d79-54bc-b96c-fc9ee126672a":   {
+    "uri": "http://www.osp-core.com/cuds#7dc3081f-72cb-4754-9623-e821b352fd14",
+    "meta": "http://onto-ns.com/meta/0.1/TypeTwo",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "g",
+      "dpTwo": 4,
+      "dpThree": 8.9
+    }
+  },
+  "cbc76b74-195c-5e77-855e-a1e434ce18c9":   {
+    "uri": "http://www.osp-core.com/cuds#5c29896e-b51f-4994-903f-090a2dedbac3",
+    "meta": "http://onto-ns.com/meta/0.1/TypeThree",
+    "dimensions": {
+    },
+    "properties": {
+      "dpTwo": 3
+    }
+  }
+}
