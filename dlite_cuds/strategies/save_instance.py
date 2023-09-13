@@ -99,7 +99,7 @@ class InstanceSaveStrategy:
 
         try:
             inst = dlite.get_instance(instance_id)
-        except dlite.DLiteError as error:
+        except dlite.DLiteError as error:  # pylint: disable=no-member
             raise DLiteCUDSError("Could not get instance! " + repr(error)) from error
 
         if self.save_config.configuration.format == "dlitesave":

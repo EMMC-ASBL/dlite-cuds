@@ -91,7 +91,7 @@ class CollectionParseStrategy:
 
         try:  # not working at the moment. Maybe not supported by DLite. MUST TEST THIS
             coll = dlite.get_collection(self.parse_config.configuration.collectionId)
-        except dlite.DLiteError as error:
+        except dlite.DLiteError as error:  # pylint: disable=no-member
             raise DLiteCUDSError("Could not get collection! " + repr(error)) from error
         # coll = dlite.Collection()
 

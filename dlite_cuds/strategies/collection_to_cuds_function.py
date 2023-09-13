@@ -100,7 +100,7 @@ class CUDSFunctionStrategy:
                 entity_coll = dlite.get_instance(
                     self.function_config.configuration.entity_collection_id
                 )
-            except dlite.DLiteError as error:
+            except dlite.DLiteError as error:  # pylint: disable=no-member
                 raise DLiteCUDSError(
                     "Could not get entity collection! " + repr(error)
                 ) from error
@@ -109,7 +109,7 @@ class CUDSFunctionStrategy:
                 entity_coll = _get_collection(
                     session=session, label="entity_collection_id"
                 )
-            except dlite.DLiteError as error:
+            except dlite.DLiteError as error:  # pylint: disable=no-member
                 raise DLiteCUDSError(
                     "Could not get entity collection from session! " + repr(error)
                 ) from error
@@ -120,14 +120,14 @@ class CUDSFunctionStrategy:
                 coll = dlite.get_instance(
                     self.function_config.configuration.collection_id
                 )
-            except dlite.DLiteError as error:
+            except dlite.DLiteError as error:  # pylint: disable=no-member
                 raise DLiteCUDSError(
                     "Could not get collection! " + repr(error)
                 ) from error
         else:
             try:
                 coll = _get_collection(session, label="collection_id")
-            except dlite.DLiteError as error:
+            except dlite.DLiteError as error:  # pylint: disable=no-member
                 raise DLiteCUDSError(
                     "Could not get collection from session! " + repr(error)
                 ) from error
