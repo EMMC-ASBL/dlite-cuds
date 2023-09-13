@@ -91,7 +91,7 @@ class InstanceParseStrategy:
 
         try:
             inst = dlite.get_instance(self.parse_config.configuration.instanceId)
-        except dlite.DLiteError as error:
+        except dlite.DLiteError as error:  # pylint: disable=no-member
             raise DLiteCUDSError("Could not get instance! " + repr(error)) from error
 
         # If the label is already in the instance_key_dict
