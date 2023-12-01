@@ -29,7 +29,7 @@ dynamic = ["version"]
 dependencies = [
     "Dlite-Python",
     "simphony-osp ~=4.0",
-    "oteapi-core",
+    "oteapi-core ==0.5.2",
 ]
 
 [project.optional-dependencies]
