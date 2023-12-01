@@ -63,10 +63,10 @@ jobs:
         pip install safety
 
     - name: Run pylint
-      run: pylint --rcfile=pyproject.toml --ignore-paths=tests/ --extension-pkg-whitelist='pydantic' *.py dlite_cuds
+      run: pylint --rcfile=pyproject.toml --ignore-paths=tests/ --extension-pkg-whitelist='pydantic' --generated-members=dlite.* *.py dlite_cuds
 
     - name: Run pylint - tests
-      run: pylint --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=import-outside-toplevel,redefined-outer-name,import-error tests --recursive=yes
+      run: pylint --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --generated-members=dlite.* --disable=import-outside-toplevel,redefined-outer-name,import-error tests --recursive=yes
 
     # Ignore ID 44715 for now.
     # See this NumPy issue for more information: https://github.com/numpy/numpy/issues/19038
