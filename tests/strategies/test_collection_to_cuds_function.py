@@ -9,7 +9,8 @@ from oteapi.datacache import DataCache
 from rdflib import URIRef
 
 from dlite_cuds.strategies.collection_to_cuds_function import CUDSFunctionStrategy
-#from dlite_cuds.strategies.parse_collection import CollectionParseStrategy
+
+# from dlite_cuds.strategies.parse_collection import CollectionParseStrategy
 
 if TYPE_CHECKING:
     from oteapi.interfaces import IParseStrategy
@@ -17,8 +18,9 @@ if TYPE_CHECKING:
     from dlite_cuds.strategies.collection_to_cuds_function import (
         SessionUpdateCUDSFunction,
     )
-    #from dlite_cuds.strategies.parse import SessionUpdateCUDSParse
-    #from dlite_cuds.strategies.parse_collection import SessionUpdateCollectionParse
+
+    # from dlite_cuds.strategies.parse import SessionUpdateCUDSParse
+    # from dlite_cuds.strategies.parse_collection import SessionUpdateCollectionParse
 
 
 # FOR NOW, THE COLLECTION TO CUDS FUNCTION USES SESSION SO THIS TEST WILL NOT WORK
