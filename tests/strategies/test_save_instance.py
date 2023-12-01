@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from test_parse_collection import test_parse_collection
-from test_parse_instance import test_parse_instance
+#from test_parse_collection import test_parse_collection
+#from test_parse_instance import test_parse_instance
 
 from dlite_cuds.strategies.save_instance import InstanceSaveStrategy
 
