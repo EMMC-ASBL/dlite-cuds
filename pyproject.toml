@@ -29,7 +29,7 @@ dynamic = ["version"]
 dependencies = [
     "Dlite-Python",
     "simphony-osp ~=4.0",
-    "oteapi-core",
+    "oteapi-core ==0.5.2",
 ]
 
 [project.optional-dependencies]
@@ -48,6 +48,7 @@ dev = [
     "mkdocs-awesome-pages-plugin ~=2.8",
     "mkdocs-material ~=9.0",
     "mkdocstrings[python] ~=0.20.0",
+    "otelib ==0.3.2",
     "pre-commit >=2.21.0, <3; python_version <'3.8'",
     "pre-commit ~=3.0; python_version >='3.8'",
     "pylint ~=2.15",
@@ -74,7 +75,7 @@ Package = "https://pypi.org/project/dlite-cuds"
 #"dlite_cuds.function/SaveGraph" = "dlite_cuds.strategies.save_graph:GraphSaveStrategy"
 [project.entry-points."oteapi.mapping"]
 [project.entry-points."oteapi.parse"]
-#"dlite_cuds.application/CUDS" = "dlite_cuds.strategies.parse:CUDSParseStrategy"
+"dlite_cuds.application/CUDS" = "dlite_cuds.strategies.parse:CUDSParseStrategy"
 #"dlite_cuds.application/Collection" = "dlite_cuds.strategies.parse_collection:CollectionParseStrategy"
 #"dlite_cuds.application/Instance" = "dlite_cuds.strategies.parse_instance:InstanceParseStrategy"
 [project.entry-points."oteapi.resource"]
