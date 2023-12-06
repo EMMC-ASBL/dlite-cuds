@@ -70,7 +70,7 @@ class CUDSParseStrategy:
         """Initialize."""
         return SessionUpdate()
 
-    def get(
+    def get(  # pylint: disable=too-many-locals
         self,
         session: "Optional[Dict[str, Any]]" = None,  # pylint: disable=unused-argument
     ) -> SessionUpdate:
@@ -81,16 +81,29 @@ class CUDSParseStrategy:
         Returns:
             key to CUDS object in cache.
         """
-        cache = DataCache(self.parse_config.configuration.datacache_config)
-
+        # cache = DataCache(self.parse_config.configuration.datacache_config)
+        cache = DataCache()
         # Get CUDS-file and dump list of triples in cache
-        downloader = create_strategy("download", self.parse_config)
-        cudsfile = downloader.get()
-        cuds_key = cudsfile["key"]
+        # downloader = create_strategy("download", self.parse_config)
+        # cudsfile = downloader.get()
+        # cuds_key = cudsfile["key"]
+        config = self.parse_config.configuration
+        cacheconfig = config.datacache_config
+        if cacheconfig and cacheconfig.accessKey:
+            cuds_key = cacheconfig.accessKey
+        elif session and "key" in session:
+            cuds_key = session[
+                "key"
+            ]  # Is key overwritten every time by the download strategy?
 
+        else:
+            raise ValueError(
+                "either `location` or `datacache_config.accessKey` must be provided"
+            )
+        # Is key overwritten every time by the download strategy?
         # Get Ontology-file and dump list of triples in cache
         onto_download_config = ResourceConfig(
-            downloadUrl=self.parse_config.configuration.ontologyUrl,
+            downloadUrl=config.ontologyUrl,
             mediaType="application/CUDS",
         )
         downloader = create_strategy("download", onto_download_config)
