@@ -21,6 +21,14 @@ Restrictions on Dlite Models etc:
 The type of the values is also limited to standard types (str, int, ...)
 
 An OTEAPI Plugin with OTE strategies.
+## Installation
+It is recommended to work in a dedicated python environment.
+
+dlite-cuds is currently not deployed on pypi, but can be installed directly from github
+with `pip install git+https://github.com/EMMC-ASBL/dlite-cuds.git`
+Note that it can only be used with oteapi-core < 0.6 (with pydantic v1), and is not
+updated to python3.11.
+This means that dlite-cuds is currently only possible to run with python < 3.11.
 
 Further reading:
 
