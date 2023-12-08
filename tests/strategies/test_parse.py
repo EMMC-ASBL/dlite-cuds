@@ -77,8 +77,9 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     which means not using dlite as underlying interoperability system.
     """
 
-    # if True:
-    #    repo_dir = Path(__file__).parent.parent.parent.resolve()
+
+if True:
+    repo_dir = Path(__file__).parent.parent.parent.resolve()
 
     from oteapi.datacache import DataCache
 
@@ -123,20 +124,20 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
 
     # Going through serialisation/deserialisation step required for
     # type specification
-    ser_graph = (
-        graph.serialize(format="json-ld").replace("\\n", "\n").replace("\\'", "'")
+    ser_graph_from_strategy = graph_from_strategy.serialize(format="json-ld")
+    deser_graph_from_strategy = Graph().parse(
+        data=ser_graph_from_strategy, format="json-ld"
     )
-    deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="json-ld")
-
-    ser_graph_from_strategy = (
-        graph_from_strategy.serialize(format="json-ld")
-        .replace("\\n", "\n")
-        .replace("\\'", "'")
+    ser_graph_from_strategy2 = deser_graph_from_strategy.serialize(format="turtle")
+    deser_graph_from_strategy2 = Graph().parse(
+        data=ser_graph_from_strategy2, format="turtle"
     )
-    deser_graph_from_strategy = Graph()
-    deser_graph_from_strategy.parse(data=ser_graph_from_strategy, format="json-ld")
 
-    graph_comparison = graph_diff(deser_graph_from_strategy, deser_graph)
-    assert graph_comparison[1].serialize().strip() == ""
-    assert graph_comparison[2].serialize().strip() == ""
+    ser_graph = graph.serialize(format="json-ld")
+    deser_graph = Graph().parse(data=ser_graph, format="json-ld")
+    ser_graph2 = deser_graph.serialize(format="turtle")
+    deser_graph2 = Graph().parse(data=ser_graph2, format="turtle")
+
+    both, first, second = graph_diff(deser_graph_from_strategy2, deser_graph2)
+    assert first.serialize().strip() == ""
+    assert second.serialize().strip() == ""
