@@ -117,14 +117,20 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     )
 
     # Parse graph directly from the files for comparison
-    # Going through serialisation/deserialisation step required for type specification
     graph = Graph()
     graph.parse(ontologypath)
     graph.parse(cudspath)
-    ser_graph = graph.serialize(format="turtle")
-    deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="turtle")
 
-    graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+    # Going through serialisation/deserialisation step required for
+    # type specification
+    ser_graph = graph.serialize(format="json-ld")
+    deser_graph = Graph()
+    deser_graph.parse(data=ser_graph, format="json-ld")
+
+    ser_graph_from_strategy = graph_from_strategy.serialize(format="json-ld")
+    deser_graph_from_strategy = Graph()
+    deser_graph_from_strategy.parse(data=ser_graph_from_strategy, format="json-ld")
+
+    graph_comparison = graph_diff(deser_graph_from_strategy, deser_graph)
     assert graph_comparison[1].serialize().strip() == ""
     assert graph_comparison[2].serialize().strip() == ""
