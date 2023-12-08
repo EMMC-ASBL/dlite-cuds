@@ -4,9 +4,6 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-# pylint: disable=too-many-locals
-# pylint: disable=C0412
-
 if TYPE_CHECKING:
     from oteapi.interfaces import IParseStrategy
 
@@ -49,37 +46,29 @@ def test_cuds_parse(repo_dir: "Path", tmpdir: "Path") -> None:
 
     parser: "IParseStrategy" = CUDSParseStrategy(config)
     parsed_data: "SessionUpdateCUDSParse" = parser.get(session)
-    print("parseddate")
-    print(parsed_data)
-    print("parseddate")
-    # create rdf graph object from strategy
 
+    # Once Dlite can pass on the graph without chanding it, we can test
+    # passing the graph via the collection instead of the cache.
+    # See the commented lines in parse.py for how to proceed once this issue
+    # is resolved in DLite.
     # convert dlite collection to graph
+    # collection_graph = coll.get("graph_key")
 
     graph_from_strategy = Graph()
-    collection_graph = coll.get("graph_key")
-    # for triple in collection_graph.get_relations():
-    #    print(triple)
-    #    #graph_from_strategy.add(triple)
-    # print to file in tmpdir
-    with open(tmpdir / "graph_from_strategy.json", "w") as f:
-        f.write(collection_graph.tojson())
-    #    f.write("\n".join(" ".join(triple) for triple in collection_graph.get_relations()) + " .")
-    #
-    graph_from_strategy.parse(tmpdir / "graph_from_strategy.json", format="json-ld")
-    # graph_from_strategy.parse(data="\n".join(" ".join(triple) for triple in collection_graph.get_relations()), format="ntriples")
-    # Parse graph directly from the files for comparison
-    # Going through serialisation/deserialisation step required for type specification
+    graph_from_strategy.parse(
+        data=cache.get(parsed_data["graph_key"]), format="json-ld"
+    )
+
     graph = Graph()
     graph.parse(ontologypath)
     graph += graph.parse(cudspath)
     ser_graph = graph.serialize(format="json-ld")
     deser_graph = Graph()
     deser_graph.parse(data=ser_graph, format="json-ld")
-
+    deser_graph.serialize(repo_dir / "fasitgraph.json", format="json-ld")
     graph_comparison = graph_diff(graph_from_strategy, deser_graph)
-    assert graph_comparison[1].serialize() == "\n"
-    assert graph_comparison[2].serialize() == "\n"
+    assert graph_comparison[1].serialize().strip() == ""
+    assert graph_comparison[2].serialize().strip() == ""
 
 
 def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
@@ -133,5 +122,5 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     deser_graph.parse(data=ser_graph, format="json-ld")
 
     graph_comparison = graph_diff(graph_from_strategy, deser_graph)
-    assert graph_comparison[1].serialize() == "\n"
-    assert graph_comparison[2].serialize() == "\n"
+    assert graph_comparison[1].serialize().strip() == ""
+    assert graph_comparison[2].serialize().strip() == ""

@@ -90,9 +90,7 @@ class CUDSParseStrategy:
         if cacheconfig and cacheconfig.accessKey:
             cuds_key = cacheconfig.accessKey
         elif session and "key" in session:
-            cuds_key = session[
-                "key"
-            ]  # Is key overwritten every time by the download strategy?
+            cuds_key = session["key"]
 
         else:
             raise ValueError(
@@ -117,31 +115,34 @@ class CUDSParseStrategy:
         if not session:
             raise ValueError("missing session")
 
-        if "collection_id" in session:
-            # Existence of collection id indicatesthat
-            # dlite is the interoperability system in use.
-            interoperability_system = "dlite"
-        else:
-            interoperability_system = "unspecified"
-        print(interoperability_system)
+        # NB: Hwo to check for interopeability system needs to be decided uppon.
+        # It is intended that if interoperability system is specified as dlite,
+        # that the graph is passed via the collection.
+        # To do this correcly requires that issue #741 in DLite is solved.
+        # if "collection_id" in session:
+        #    # Existence of collection id indicates that
+        #    # dlite is the interoperability system in use.
+        #    interoperability_system = "dlite"
+        # else:
+        #    interoperability_system = "unspecified"
 
-        if interoperability_system == "dlite":
-            import dlite  # pylint: disable=import-outside-toplevel
-            from oteapi_dlite.models import (  # pylint: disable=import-outside-toplevel
-                DLiteSessionUpdate,
-            )
-            from oteapi_dlite.utils import (  # pylint: disable=import-outside-toplevel
-                update_collection,
-            )
+        # if interoperability_system == "dlite":
+        #    import dlite  # pylint: disable=import-outside-toplevel
+        #    from oteapi_dlite.models import (  # pylint: disable=import-outside-toplevel
+        #        DLiteSessionUpdate,
+        #    )
+        #    from oteapi_dlite.utils import (  # pylint: disable=import-outside-toplevel
+        #        update_collection,
+        #    )
 
-            coll = dlite.get_instance(session["collection_id"])
-            graph_coll = dlite.Collection()
-            for triple in graph.triples((None, None, None)):
-                graph_coll.add_relation(*triple)
-
-            coll.add("graph_key", graph_coll)
-            update_collection(coll)
-            return DLiteSessionUpdate(collection_id=coll.uuid)
+        #    coll = dlite.get_instance(session["collection_id"])
+        #    graph_coll = dlite.Collection()
+        #    for triple in graph.triples((None, None, None)):
+        #        graph_coll.add_relation(*triple)
+        #
+        #    coll.add("graph_key", graph_coll)
+        #    update_collection(coll)
+        #    return DLiteSessionUpdate(collection_id=coll.uuid)
 
         return SessionUpdateCUDSParse(
             **{
