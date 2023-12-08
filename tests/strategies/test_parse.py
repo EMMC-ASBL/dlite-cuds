@@ -76,6 +76,10 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     Here it tests the version without a collection_id in the session,
     which means not using dlite as underlying interoperability system.
     """
+
+    # if True:
+    #    repo_dir = Path(__file__).parent.parent.parent.resolve()
+
     from oteapi.datacache import DataCache
 
     # Create the otelib client with python as backend
@@ -116,10 +120,10 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     # Going through serialisation/deserialisation step required for type specification
     graph = Graph()
     graph.parse(ontologypath)
-    graph += graph.parse(cudspath)
-    ser_graph = graph.serialize(format="json-ld")
+    graph.parse(cudspath)
+    ser_graph = graph.serialize(format="turtle")
     deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="json-ld")
+    deser_graph.parse(data=ser_graph, format="turtle")
 
     graph_comparison = graph_diff(graph_from_strategy, deser_graph)
     assert graph_comparison[1].serialize().strip() == ""
