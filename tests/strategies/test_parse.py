@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from dlite_cuds.strategies.parse import SessionUpdateCUDSParse
 
 
-def test_cuds_parse(repo_dir: "Path") -> None:
+def test_cuds_parse(repo_dir: "Path", tmpdir: "Path") -> None:
     """Test `application/cuds` parse strategy ."""
     import dlite
     from oteapi.datacache import DataCache
@@ -49,13 +49,25 @@ def test_cuds_parse(repo_dir: "Path") -> None:
 
     parser: "IParseStrategy" = CUDSParseStrategy(config)
     parsed_data: "SessionUpdateCUDSParse" = parser.get(session)
+    print("parseddate")
     print(parsed_data)
+    print("parseddate")
     # create rdf graph object from strategy
-    graph_from_strategy = Graph()
-    graph_from_strategy.parse(
-        data=cache.get(parsed_data["graph_cache_key"]), format="json-ld"
-    )
 
+    # convert dlite collection to graph
+
+    graph_from_strategy = Graph()
+    collection_graph = coll.get("graph_key")
+    # for triple in collection_graph.get_relations():
+    #    print(triple)
+    #    #graph_from_strategy.add(triple)
+    # print to file in tmpdir
+    with open(tmpdir / "graph_from_strategy.json", "w") as f:
+        f.write(collection_graph.tojson())
+    #    f.write("\n".join(" ".join(triple) for triple in collection_graph.get_relations()) + " .")
+    #
+    graph_from_strategy.parse(tmpdir / "graph_from_strategy.json", format="json-ld")
+    # graph_from_strategy.parse(data="\n".join(" ".join(triple) for triple in collection_graph.get_relations()), format="ntriples")
     # Parse graph directly from the files for comparison
     # Going through serialisation/deserialisation step required for type specification
     graph = Graph()
@@ -71,7 +83,10 @@ def test_cuds_parse(repo_dir: "Path") -> None:
 
 
 def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
-    """Test `application/cuds` parse strategy ."""
+    """Test `application/cuds` parse strategy using otelib
+    Here it tests the version without a collection_id in the session,
+    which means not using dlite as underlying interoperability system.
+    """
     from oteapi.datacache import DataCache
 
     # Create the otelib client with python as backend
@@ -105,7 +120,7 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     cache = DataCache()
     graph_from_strategy = Graph()
     graph_from_strategy.parse(
-        data=cache.get(parsed_data["graph_cache_key"]), format="json-ld"
+        data=cache.get(parsed_data["graph_key"]), format="json-ld"
     )
 
     # Parse graph directly from the files for comparison

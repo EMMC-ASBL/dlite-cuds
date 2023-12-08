@@ -46,9 +46,11 @@ class CUDSParseResourceConfig(ResourceConfig):
 class SessionUpdateCUDSParse(SessionUpdate):
     """Class for returning values from CUDS Parse."""
 
-    graph_cache_key: str = Field(..., description="Key to graph in cache.")
-    cuds_cache_key: str = Field(..., description="Key to cuds in cache.")
-    ontology_cache_key: str = Field(..., description="Key to ontology in cache.")
+    graph_key: str = Field(
+        ...,
+        description="Key to graph in cache or in collection if DLite is used as "
+        "interoperability system.",
+    )
 
 
 @dataclass
@@ -81,14 +83,10 @@ class CUDSParseStrategy:
         Returns:
             key to CUDS object in cache.
         """
-        # cache = DataCache(self.parse_config.configuration.datacache_config)
-        cache = DataCache()
-        # Get CUDS-file and dump list of triples in cache
-        # downloader = create_strategy("download", self.parse_config)
-        # cudsfile = downloader.get()
-        # cuds_key = cudsfile["key"]
         config = self.parse_config.configuration
         cacheconfig = config.datacache_config
+
+        cache = DataCache(cacheconfig)
         if cacheconfig and cacheconfig.accessKey:
             cuds_key = cacheconfig.accessKey
         elif session and "key" in session:
@@ -100,8 +98,8 @@ class CUDSParseStrategy:
             raise ValueError(
                 "either `location` or `datacache_config.accessKey` must be provided"
             )
-        # Is key overwritten every time by the download strategy?
-        # Get Ontology-file and dump list of triples in cache
+
+        # Get Ontology-file
         onto_download_config = ResourceConfig(
             downloadUrl=config.ontologyUrl,
             mediaType="application/CUDS",
@@ -110,24 +108,43 @@ class CUDSParseStrategy:
         ontofile = downloader.get()
         onto_key = ontofile["key"]
 
-        # add cuds as graph to datacache
-        cudsgraph = get_graph(cache[cuds_key])
-        cuds_cache_key = cache.add(cudsgraph.serialize(format="json-ld"))
-
-        # add ontology as graph to datacache
-        ontograph = get_graph(cache[onto_key])
-        onto_cache_key = cache.add(ontograph.serialize(format="json-ld"))
-
         # Make a graph with both cuds and ontology
         graph = get_graph(cache[cuds_key])
         graph += get_graph(cache[onto_key])
 
         graph_cache_key = cache.add(graph.serialize(format="json-ld"))
 
+        if not session:
+            raise ValueError("missing session")
+
+        if "collection_id" in session:
+            # Existence of collection id indicatesthat
+            # dlite is the interoperability system in use.
+            interoperability_system = "dlite"
+        else:
+            interoperability_system = "unspecified"
+        print(interoperability_system)
+
+        if interoperability_system == "dlite":
+            import dlite  # pylint: disable=import-outside-toplevel
+            from oteapi_dlite.models import (  # pylint: disable=import-outside-toplevel
+                DLiteSessionUpdate,
+            )
+            from oteapi_dlite.utils import (  # pylint: disable=import-outside-toplevel
+                update_collection,
+            )
+
+            coll = dlite.get_instance(session["collection_id"])
+            graph_coll = dlite.Collection()
+            for triple in graph.triples((None, None, None)):
+                graph_coll.add_relation(*triple)
+
+            coll.add("graph_key", graph_coll)
+            update_collection(coll)
+            return DLiteSessionUpdate(collection_id=coll.uuid)
+
         return SessionUpdateCUDSParse(
             **{
-                "cuds_cache_key": cuds_cache_key,
-                "ontology_cache_key": onto_cache_key,
-                "graph_cache_key": graph_cache_key,
+                "graph_key": graph_cache_key,
             },
         )
