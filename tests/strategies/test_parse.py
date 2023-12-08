@@ -123,11 +123,17 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
 
     # Going through serialisation/deserialisation step required for
     # type specification
-    ser_graph = graph.serialize(format="json-ld")
+    ser_graph = (
+        graph.serialize(format="json-ld").replace("\\n", "\n").replace("\\'", "'")
+    )
     deser_graph = Graph()
     deser_graph.parse(data=ser_graph, format="json-ld")
 
-    ser_graph_from_strategy = graph_from_strategy.serialize(format="json-ld")
+    ser_graph_from_strategy = (
+        graph_from_strategy.serialize(format="json-ld")
+        .replace("\\n", "\n")
+        .replace("\\'", "'")
+    )
     deser_graph_from_strategy = Graph()
     deser_graph_from_strategy.parse(data=ser_graph_from_strategy, format="json-ld")
 
