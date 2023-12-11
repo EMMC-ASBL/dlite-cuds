@@ -1,11 +1,9 @@
-"""Test parse strategies."""
+"""Test parse strategy for parsing CUDS"""
+import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-
-# pylint: disable=too-many-locals
-# pylint: disable=C0412
 
 if TYPE_CHECKING:
     from oteapi.interfaces import IParseStrategy
@@ -13,17 +11,88 @@ if TYPE_CHECKING:
     from dlite_cuds.strategies.parse import SessionUpdateCUDSParse
 
 
-@pytest.mark.skip("Not yet fixed after porting.")
-def test_cuds_parse(repo_dir: "Path") -> None:
+def test_cuds_parse(repo_dir: "Path", tmpdir: "Path") -> None:
     """Test `application/cuds` parse strategy ."""
+    import dlite
     from oteapi.datacache import DataCache
     from rdflib import Graph
     from rdflib.compare import graph_diff
 
     from dlite_cuds.strategies.parse import CUDSParseStrategy
 
-    ontologypath = repo_dir / "tests" / "testfiles" / "onto.ttl"
-    cudspath = repo_dir / "tests" / "testfiles" / "case.ttl"
+    ontologypath = repo_dir / "tests" / "ontologies" / "chemistry.ttl"
+    cudspath = repo_dir / "tests" / "inputfiles_cuds2dlite" / "cuds.ttl"
+
+    # Create session and place the collection in it
+    # The session needs to contain the downloaded file
+    # as this is done automatically when running the parse strategy
+    # through otelib.
+    cache = DataCache()
+    cuds_key = cache.add(cudspath.read_bytes())
+    coll = dlite.Collection()
+    session = {
+        "collection_id": coll.uuid,
+        "key": cuds_key,
+    }
+    cache.add(coll.asjson(), key=coll.uuid)
+
+    # Specify and run the parse strategy
+    config = {
+        "downloadUrl": cudspath.as_uri(),
+        "mediaType": "application/CUDS",
+        "configuration": {
+            "ontologyUrl": ontologypath.as_uri(),
+        },
+    }
+
+    parser: "IParseStrategy" = CUDSParseStrategy(config)
+    parsed_data: "SessionUpdateCUDSParse" = parser.get(session)
+
+    # Once Dlite can pass on the graph without chanding it, we can test
+    # passing the graph via the collection instead of the cache.
+    # See the commented lines in parse.py for how to proceed once this issue
+    # is resolved in DLite.
+    # convert dlite collection to graph
+    # collection_graph = coll.get("graph_key")
+
+    graph_from_strategy = Graph()
+    graph_from_strategy.parse(
+        data=cache.get(parsed_data["graph_key"]), format="json-ld"
+    )
+
+    if sys.platform != "win32":
+        # The serialisation/deserialisation in windows messes up the lineshifts
+        graph = Graph()
+        graph.parse(ontologypath)
+        graph += graph.parse(cudspath)
+        ser_graph = graph.serialize(format="json-ld")
+        deser_graph = Graph()
+        deser_graph.parse(data=ser_graph, format="json-ld")
+        deser_graph.serialize(repo_dir / "fasitgraph.json", format="json-ld")
+        graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+        assert graph_comparison[1].serialize().strip() == ""
+        assert graph_comparison[2].serialize().strip() == ""
+
+
+def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
+    """Test `application/cuds` parse strategy using otelib
+    Here it tests the version without a collection_id in the session,
+    which means not using dlite as underlying interoperability system.
+    """
+    from oteapi.datacache import DataCache
+
+    # Create the otelib client with python as backend
+    from otelib import OTEClient
+    from rdflib import Graph
+    from rdflib.compare import graph_diff
+
+    from dlite_cuds.strategies.parse import CUDSParseStrategy
+
+    client = OTEClient("python")
+
+    # Specify and run the parse strategy as a pipeline in otelib
+    ontologypath = repo_dir / "tests" / "ontologies" / "chemistry.ttl"
+    cudspath = repo_dir / "tests" / "inputfiles_cuds2dlite" / "cuds.ttl"
 
     config = {
         "downloadUrl": cudspath.as_uri(),
@@ -33,30 +102,28 @@ def test_cuds_parse(repo_dir: "Path") -> None:
         },
     }
 
-    # Create session an place collection in it
-    session = {}
-    # Should test triple in cache
+    source_and_parse = client.create_dataresource(**config)
+    pipeline = source_and_parse
+    data = pipeline.get()
+
+    # Get the data
+    parsed_data = eval(data.decode("utf-8"))
+
     cache = DataCache()
-    parser: "IParseStrategy" = CUDSParseStrategy(config)
-    session.update(parser.initialize())
-    # parsing of the input CUDS, graph stored in the cache and
-    # graph_cache_key stored in the session
-    parsed_data: "SessionUpdateCUDSParse" = parser.get(session)
-    # create rdf graph object from strategy
     graph_from_strategy = Graph()
     graph_from_strategy.parse(
-        data=cache.get(parsed_data["graph_cache_key"]), format="json-ld"
+        data=cache.get(parsed_data["graph_key"]), format="json-ld"
     )
+    if sys.platform != "win32":
+        # Parse graph directly from the files for comparison
+        # Going through serialisation/deserialisation step required for type specification
+        graph = Graph()
+        graph.parse(ontologypath)
+        graph += graph.parse(cudspath)
+        ser_graph = graph.serialize(format="json-ld")
+        deser_graph = Graph()
+        deser_graph.parse(data=ser_graph, format="json-ld")
 
-    # Parse graph directly from the files for comparison
-    # Going through serialisation/deserialisation step required for type specification
-    graph = Graph()
-    graph.parse(ontologypath)
-    graph += graph.parse(cudspath)
-    ser_graph = graph.serialize(format="json-ld")
-    deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="json-ld")
-
-    graph_comparison = graph_diff(graph_from_strategy, deser_graph)
-    assert graph_comparison[1].serialize() == "\n"
-    assert graph_comparison[2].serialize() == "\n"
+        graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+        assert graph_comparison[1].serialize().strip() == ""
+        assert graph_comparison[2].serialize().strip() == ""
