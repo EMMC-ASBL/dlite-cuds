@@ -119,7 +119,7 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     graph_from_strategy.parse(
         data=cache.get(parsed_data["graph_key"]), format="json-ld"
     )
-
+    print(sys.platform)
     if sys.platform == "win32":
         temp_graph = graph_from_strategy.serialize(format="json-ld")
         graph_to_compare = Graph()
