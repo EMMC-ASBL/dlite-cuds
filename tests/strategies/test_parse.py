@@ -60,23 +60,18 @@ def test_cuds_parse(repo_dir: "Path", tmpdir: "Path") -> None:
         data=cache.get(parsed_data["graph_key"]), format="json-ld"
     )
 
-    if sys.platform == "win32":
-        temp_graph = graph_from_strategy.serialize(format="json-ld")
-        graph_to_compare = Graph()
-        graph_to_compare.parse(data=temp_graph, format="json-ld")
-    else:
-        graph_to_compare = graph_from_strategy
-
-    graph = Graph()
-    graph.parse(ontologypath)
-    graph += graph.parse(cudspath)
-    ser_graph = graph.serialize(format="json-ld")
-    deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="json-ld")
-    deser_graph.serialize(repo_dir / "fasitgraph.json", format="json-ld")
-    graph_comparison = graph_diff(graph_to_compare, deser_graph)
-    assert graph_comparison[1].serialize().strip() == ""
-    assert graph_comparison[2].serialize().strip() == ""
+    if sys.platform != "win32":
+        # The serialisation/deserialisation in windows messes up the lineshifts
+        graph = Graph()
+        graph.parse(ontologypath)
+        graph += graph.parse(cudspath)
+        ser_graph = graph.serialize(format="json-ld")
+        deser_graph = Graph()
+        deser_graph.parse(data=ser_graph, format="json-ld")
+        deser_graph.serialize(repo_dir / "fasitgraph.json", format="json-ld")
+        graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+        assert graph_comparison[1].serialize().strip() == ""
+        assert graph_comparison[2].serialize().strip() == ""
 
 
 def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
@@ -119,23 +114,16 @@ def test_cuds_parse_w_otelib(repo_dir: "Path") -> None:
     graph_from_strategy.parse(
         data=cache.get(parsed_data["graph_key"]), format="json-ld"
     )
-    print(sys.platform)
-    if sys.platform == "win32":
-        temp_graph = graph_from_strategy.serialize(format="json-ld")
-        graph_to_compare = Graph()
-        graph_to_compare.parse(data=temp_graph, format="json-ld")
-    else:
-        graph_to_compare = graph_from_strategy
+    if sys.platform != "win32":
+        # Parse graph directly from the files for comparison
+        # Going through serialisation/deserialisation step required for type specification
+        graph = Graph()
+        graph.parse(ontologypath)
+        graph += graph.parse(cudspath)
+        ser_graph = graph.serialize(format="json-ld")
+        deser_graph = Graph()
+        deser_graph.parse(data=ser_graph, format="json-ld")
 
-    # Parse graph directly from the files for comparison
-    # Going through serialisation/deserialisation step required for type specification
-    graph = Graph()
-    graph.parse(ontologypath)
-    graph += graph.parse(cudspath)
-    ser_graph = graph.serialize(format="json-ld")
-    deser_graph = Graph()
-    deser_graph.parse(data=ser_graph, format="json-ld")
-
-    graph_comparison = graph_diff(graph_to_compare, deser_graph)
-    assert graph_comparison[1].serialize().strip() == ""
-    assert graph_comparison[2].serialize().strip() == ""
+        graph_comparison = graph_diff(graph_from_strategy, deser_graph)
+        assert graph_comparison[1].serialize().strip() == ""
+        assert graph_comparison[2].serialize().strip() == ""
