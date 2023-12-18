@@ -1,0 +1,11 @@
+{
+  "uri": "http://onto-ns.com/meta/0.1/TypeThree",
+  "description": "",
+  "dimensions": {},
+  "properties": {
+    "dpTwo": {
+      "type": "int",
+      "description": ""
+    }
+  }
+}
