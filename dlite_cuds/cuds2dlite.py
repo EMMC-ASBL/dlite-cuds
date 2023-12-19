@@ -2,14 +2,14 @@
 containting relations."""
 
 import warnings
+from typing import Optional
 
 import dlite
 import tripper
 from dlite.datamodel import DataModel
 from simphony_osp.session import core_session
 
-from dlite_cuds.utils.utils import datatype_cuds2dlite, DLiteCUDSError
-from typing import Optional
+from dlite_cuds.utils.utils import DLiteCUDSError, datatype_cuds2dlite
 
 
 def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
@@ -35,7 +35,8 @@ def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
             break
         except KeyError as exc:
             raise DLiteCUDSError(
-                f"Could not find {cuds_class_iri} in namespaces") from exc
+                f"Could not find {cuds_class_iri} in namespaces"
+            ) from exc
 
     # returns all instances with cuds_class
     cuds_instances = simphony_session.get(oclass=cuds_class)
@@ -65,7 +66,7 @@ def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
                         individual[pred.label] = list(val)[0]
 
             for rel in cuds_instance.relationships_iter(return_rel=True):
-                # go through all relations in the cuds instance and add 
+                # go through all relations in the cuds instance and add
                 # to DLite collection
                 collection.add_relation(
                     individual.uuid, str(rel[1].iri), str(rel[0].uid)
@@ -92,8 +93,8 @@ def create_entity_and_mappings(
             break
         except KeyError as exc:
             raise DLiteCUDSError(
-                f"Could not find {cuds_class_iri} in namespaces") from exc
-    
+                f"Could not find {cuds_class_iri} in namespaces"
+            ) from exc
 
     # returns all instances with cuds_class
     cuds_instances = simphony_session.get(oclass=cuds_class)
@@ -104,7 +105,7 @@ def create_entity_and_mappings(
             if entity_uri is None:
                 entity_uri = "http://onto-ns.com/" + list(cuds_class.classes)[0].label
 
-            # create helper class to make entity, 
+            # create helper class to make entity,
             # note that dimensions > 1 are not supported
             datamodel = DataModel(
                 uri=entity_uri, description="Entity created by CUDS2DLITE"
