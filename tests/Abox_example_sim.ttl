@@ -1,23 +1,23 @@
 @prefix ex: <http://www.osp-core.com/ex#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://www.simphony-osp.eu/entity#2be16c79-6aa5-412d-bc0a-38dea920babd> a ex:TypeOne ;
+<https://www.simphony-osp.eu/entity#6ce00d67-46dc-404f-901b-41d17ba7b0a0> a ex:TypeOne ;
     ex:dpOne "a"^^xsd:string ;
     ex:dpTwo 1 ;
-    ex:opOne <https://www.simphony-osp.eu/entity#26da47dc-1202-4479-98c6-586235a17ffb> ;
-    ex:opTwo <https://www.simphony-osp.eu/entity#d6be9818-112e-4697-9046-a3084222191d> .
+    ex:opOne <https://www.simphony-osp.eu/entity#3919ea39-4c00-44f6-a8d2-affc09a78111> ;
+    ex:opTwo <https://www.simphony-osp.eu/entity#58dc4f5e-d6a6-4c12-8fda-32c56c07acc2> .
 
-<https://www.simphony-osp.eu/entity#26da47dc-1202-4479-98c6-586235a17ffb> a ex:TypeTwo ;
+<https://www.simphony-osp.eu/entity#3919ea39-4c00-44f6-a8d2-affc09a78111> a ex:TypeTwo ;
     ex:dpOne "b"^^xsd:string ;
     ex:dpThree "2.5"^^xsd:float ;
     ex:dpTwo 5 ;
-    ex:opTwo <https://www.simphony-osp.eu/entity#2fc7a6df-eb86-4eda-a601-c4a0b584a89d> .
+    ex:opTwo <https://www.simphony-osp.eu/entity#a67ea05c-0134-497e-bbf5-db5a7050d126> .
 
-<https://www.simphony-osp.eu/entity#2fc7a6df-eb86-4eda-a601-c4a0b584a89d> a ex:TypeTwo ;
+<https://www.simphony-osp.eu/entity#58dc4f5e-d6a6-4c12-8fda-32c56c07acc2> a ex:TypeThree ;
+    ex:dpTwo 3 .
+
+<https://www.simphony-osp.eu/entity#a67ea05c-0134-497e-bbf5-db5a7050d126> a ex:TypeTwo ;
     ex:dpOne "g"^^xsd:string ;
     ex:dpThree "8.9"^^xsd:float ;
     ex:dpTwo 4 .
-
-<https://www.simphony-osp.eu/entity#d6be9818-112e-4697-9046-a3084222191d> a ex:TypeThree ;
-    ex:dpTwo 3 .
 
