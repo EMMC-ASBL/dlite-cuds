@@ -33,13 +33,14 @@ def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
         try:
             cuds_class = namespace.from_iri(cuds_class_iri)
             break
-        except KeyError as exc:
-            raise DLiteCUDSError(
-                f"Could not find {cuds_class_iri} in namespaces"
-            ) from exc
+        except KeyError:
+            continue
+    if not cuds_class:
+        raise DLiteCUDSError(f"Could not find cuds class {cuds_class_iri}")
 
     # returns all instances with cuds_class
     cuds_instances = simphony_session.get(oclass=cuds_class)
+
     # create dlite entity
     entity = dlite.get_instance(entity_uri)
 
@@ -91,10 +92,11 @@ def create_entity_and_mappings(
         try:
             cuds_class = namespace.from_iri(cuds_class_iri)
             break
-        except KeyError as exc:
-            raise DLiteCUDSError(
-                f"Could not find {cuds_class_iri} in namespaces"
-            ) from exc
+        except KeyError:
+            continue
+
+    if not cuds_class:
+        raise DLiteCUDSError(f"Could not find cuds class {cuds_class_iri}")
 
     # returns all instances with cuds_class
     cuds_instances = simphony_session.get(oclass=cuds_class)

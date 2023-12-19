@@ -20,4 +20,3 @@
     ex:dpOne "g"^^xsd:string ;
     ex:dpThree "8.9"^^xsd:float ;
     ex:dpTwo 4 .
-
