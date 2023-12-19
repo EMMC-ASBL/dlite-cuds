@@ -9,7 +9,7 @@ import tripper
 from dlite.datamodel import DataModel
 from simphony_osp.session import core_session
 
-from dlite_cuds.utils.utils import DLiteCUDSError, datatype_cuds2dlite
+from dlite_cuds.utils.utils import DLiteCUDSError, DLiteCUDSWarning, datatype_cuds2dlite
 
 
 def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
@@ -115,7 +115,8 @@ def create_entity_and_mappings(
             if dlite.has_instance(entity_uri):
                 entity = dlite.get_instance(entity_uri)
                 warnings.warn(
-                    "Entity already exists, be sure this is the one you want to use"
+                    "Entity already exists, be sure this is the one you want to use",
+                    DLiteCUDSWarning,
                 )
             else:
                 for prop in cuds_instance.attributes.keys():
