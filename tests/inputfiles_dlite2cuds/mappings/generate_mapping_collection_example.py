@@ -61,9 +61,21 @@ mappings = [
     (TWO.dpTwo, "http://emmo.info/domain-mappings#mapsTo", ONTO.dpTwo),
     (TWO.dpThree, "http://emmo.info/domain-mappings#mapsTo", ONTO.dpThree),
     (THREE.dpTwo, "http://emmo.info/domain-mappings#mapsTo", ONTO.dpTwo),
-    ("http://onto-ns.com/meta/0.1/TypeOne", "http://emmo.info/domain-mappings#mapsTo", ONTO.TypeOne),
-    ("http://onto-ns.com/meta/0.1/TypeTwo", "http://emmo.info/domain-mappings#mapsTo", ONTO.TypeTwo),
-    ("http://onto-ns.com/meta/0.1/TypeThree", "http://emmo.info/domain-mappings#mapsTo", ONTO.TypeThree),
+    (
+        "http://onto-ns.com/meta/0.1/TypeOne",
+        "http://emmo.info/domain-mappings#mapsTo",
+        ONTO.TypeOne,
+    ),
+    (
+        "http://onto-ns.com/meta/0.1/TypeTwo",
+        "http://emmo.info/domain-mappings#mapsTo",
+        ONTO.TypeTwo,
+    ),
+    (
+        "http://onto-ns.com/meta/0.1/TypeThree",
+        "http://emmo.info/domain-mappings#mapsTo",
+        ONTO.TypeThree,
+    ),
 ]
 
 # print('add mapping triples to triplestore')

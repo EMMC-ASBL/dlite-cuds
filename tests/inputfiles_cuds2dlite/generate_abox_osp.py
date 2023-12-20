@@ -14,7 +14,7 @@ def generate_example():
     inst1.add(inst2, rel=ex.opOne)
     inst1.add(inst3, rel=ex.opTwo)
 
-    export_cuds(inst1, file="new_abox.ttl") # NB, careful with what is orverwritten
+    export_cuds(inst1, file="new_abox.ttl")  # NB, careful with what is orverwritten
 
 
 if __name__ == "__main__":
