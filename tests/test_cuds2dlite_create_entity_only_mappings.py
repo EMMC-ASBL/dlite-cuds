@@ -31,6 +31,7 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
         # cuds already imported
         pass
     # The dlite collection into which the enitites should be added
+
     dlite.storage_path.append(repo_dir / "tests" / "inputfiles_dlite2cuds" / "entities")
     mapping_iri = "http://emmo.info/domain-mappings#mapsTo"
     # check the warning is raised when the entity already exists
@@ -38,7 +39,7 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
         entity, collection = create_entity_and_mappings(
             simphony_session=core_session,
             cuds_class_iri="http://www.osp-core.com/ex#TypeOne",
-            entity_uri="http://onto-ns.com/meta/0.1/TypeOne",
+            entity_uri="http://onto-ns.com/meta/0.2/TypeOne",
             mapping_iri=mapping_iri,
         )
         # assert the error message of the warning
@@ -47,7 +48,7 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
             == "Entity already exists, be sure this is the one you want to use"
         )
 
-    assert entity.uri == "http://onto-ns.com/meta/0.1/TypeOne"
+    assert entity.uri == "http://onto-ns.com/meta/0.2/TypeOne"
     assert entity.description == ""  # Entity in repo has no description
     entitydict = entity.asdict()
     assert set(entitydict["properties"].keys()) == {"dpOne", "dpTwo"}
@@ -56,12 +57,12 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
     # Check that collection with mappings is made even though entity already exists
     assert set(collection.get_relations(p=mapping_iri)) == {
         (
-            "http://onto-ns.com/meta/0.1/TypeOne#dpOne",
+            "http://onto-ns.com/meta/0.2/TypeOne#dpOne",
             "http://emmo.info/domain-mappings#mapsTo",
             "http://www.osp-core.com/ex#dpOne",
         ),
         (
-            "http://onto-ns.com/meta/0.1/TypeOne#dpTwo",
+            "http://onto-ns.com/meta/0.2/TypeOne#dpTwo",
             "http://emmo.info/domain-mappings#mapsTo",
             "http://www.osp-core.com/ex#dpTwo",
         ),
