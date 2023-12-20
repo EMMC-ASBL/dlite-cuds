@@ -38,7 +38,11 @@ def test_cuds2dlite_simphony_create_instances(repo_dir):
 
     # mappings to be provided as a DLite collection in current implementation
     mappings_path = (
-        repo_dir / "tests" / "inputfiles_dlite2cuds" / "mappings" / "mappings_example.json"
+        repo_dir
+        / "tests"
+        / "inputfiles_dlite2cuds"
+        / "mappings"
+        / "mappings_example.json"
     )
     mappings = dlite.Collection.from_url(f"json://{str(mappings_path)}")
 

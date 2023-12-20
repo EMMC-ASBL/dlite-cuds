@@ -115,15 +115,17 @@ def get_unique_triple(
     graph,
     subj,
     predicate="http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-    debug=False,
+    debug=True,
     dtype=False,
 ):
     """Get unique triple"""
     predicate_m = "<" + predicate + ">"
     subj_m = "<" + subj + ">"
     query = f"""SELECT ?o WHERE {{ {subj_m} {predicate_m} ?o . }}"""
-
+    print("subj_m", subj_m)
+    print("predicate_m", predicate_m)
     qres = graph.query(query)
+    print(qres)
     if debug:
         print(query, len(qres))
 
@@ -184,21 +186,24 @@ def get_object_props_uri(graph, subj, relations):
 
     # get the uri of the prop that is in relation with the subj Datum
     subj_m = "<" + subj + ">"
+    print("subj_m", subj_m)
 
     # build value list from relations
     value_list = ""
     for rel in relations:
         value_list += " <" + rel + "> "
+        print("rel", rel)
+        print("value_list", value_list)
     value_list = "VALUES ?p { " + value_list + " }"
 
     query = f"""SELECT ?o WHERE {{ {value_list} {subj_m} ?p ?o . }}"""
-
+    print("query", query)
     qres = graph.query(query)
-
+    print("qres", qres)
     list_prop_uri = []
     for row in qres:
         list_prop_uri.append(str(row.o))
-
+    print("list_prop_uri", list_prop_uri)
     return list_prop_uri
 
 
@@ -213,10 +218,12 @@ def get_value_prop(
     if the property is missing one of this element, return an empty dict
     """
     dict_prop = {}
+    print("in get_value_prop to get concept")
     concept = get_unique_triple(graph, prop_uri)
+    print("concept", concept)
     if concept is None:
         return {}
-
+    value_predicate = "http://www.w3.org/2002/07/owl#DatatypeProperty"
     dict_prop["concept"] = concept
 
     # unit = get_unique_triple(graph, prop_uri, predicate=unit_predicate)
@@ -225,8 +232,10 @@ def get_value_prop(
     # dict_prop["unit"] = unit
 
     value, datatype = get_unique_triple(
-        graph, prop_uri, predicate=value_predicate, dtype=True
+        graph, prop_uri, predicate=value_predicate, dtype=False
     )
+    print("valeu", value)
+    print("datatype", datatype)
     if value is None:
         return {}
 
@@ -257,13 +266,14 @@ def get_unique_prop_fromlist_uri(
     # build value list from relations
     valuelist = ""
     for subj in listsubj:
-        valuelist += " <" + subj + "> "
+        valuelist = subj
+        # valuelist += " <" + subj + "> "
     valuelist = "VALUES ?s { " + valuelist + " }"
 
     query = f"""SELECT ?s WHERE {{ {valuelist} ?s {predicatem} {objm} . }}"""
-
+    print("query", query)
     qres = graph.query(query)
-
+    print("aaaaa", len(qres))
     if len(qres) != 1:
         print("getUniquePropFromListURI: not exactly one object for uniquetriple query")
         subj = None
