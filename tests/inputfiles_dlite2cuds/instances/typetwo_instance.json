@@ -1,0 +1,12 @@
+{
+  "3919ea39-4c00-44f6-a8d2-affc09a78111":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeTwo",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "b",
+      "dpTwo": 5,
+      "dpThree": 2.5
+    }
+  }
+}

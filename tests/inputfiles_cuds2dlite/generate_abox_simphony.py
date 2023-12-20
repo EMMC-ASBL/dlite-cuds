@@ -21,4 +21,4 @@ inst2.connect(inst4, rel=ex.opTwo)
 inst1.connect(inst2, rel=ex.opOne)
 inst1.connect(inst3, rel=ex.opTwo)
 
-export_file(core_session, file="Abox_example_sim.ttl")
+export_file(core_session, file="generated_file.ttl") # Note that this overwrites the file if it already exists
