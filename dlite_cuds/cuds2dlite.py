@@ -23,8 +23,11 @@ def create_instance(  # pylint: disable=too-many-arguments, too-many-locals
     """Create instances of a dlite entity from a given cuds_class
     Return:
         labels: list of new labels corresponding to new instances in the collection
-        collection: collection containing all entities and relations
+        collection: collection containing all individuals and relations
     """
+    # Create collection if not there
+    if collection is None:
+        collection = dlite.Collection()
 
     mappings_ts = tripper.Triplestore("collection", collection=mappings)
 
