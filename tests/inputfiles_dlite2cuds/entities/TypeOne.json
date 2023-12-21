@@ -1,0 +1,15 @@
+{
+  "uri": "http://onto-ns.com/meta/0.1/TypeOne",
+  "description": "",
+  "dimensions": {},
+  "properties": {
+    "dpOne": {
+      "type": "string",
+      "description": ""
+    },
+    "dpTwo": {
+      "type": "int",
+      "description": ""
+    }
+  }
+}

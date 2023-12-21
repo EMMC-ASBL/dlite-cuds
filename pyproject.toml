@@ -30,6 +30,7 @@ dependencies = [
     "Dlite-Python",
     "simphony-osp ~=4.0",
     "oteapi-core ==0.5.2",
+    "tripper ~=0.2.13",
 ]
 
 [project.optional-dependencies]

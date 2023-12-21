@@ -1,0 +1,11 @@
+{
+  "6ce00d67-46dc-404f-901b-41d17ba7b0a0":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeOne",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "a",
+      "dpTwo": 1
+    }
+  }
+}

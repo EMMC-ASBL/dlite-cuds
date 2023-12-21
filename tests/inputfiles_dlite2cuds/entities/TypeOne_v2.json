@@ -1,0 +1,15 @@
+{
+  "uri": "http://onto-ns.com/meta/0.2/TypeOne",
+  "description": "Previously created entity",
+  "dimensions": {},
+  "properties": {
+    "dpOne": {
+      "type": "string",
+      "description": ""
+    },
+    "dpTwo": {
+      "type": "int64",
+      "description": ""
+    }
+  }
+}

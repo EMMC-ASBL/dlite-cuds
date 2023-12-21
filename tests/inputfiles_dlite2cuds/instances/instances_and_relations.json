@@ -1,0 +1,48 @@
+{
+  "6ce00d67-46dc-404f-901b-41d17ba7b0a0":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeOne",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "a",
+      "dpTwo": 1
+    }
+  },
+  "58dc4f5e-d6a6-4c12-8fda-32c56c07acc2":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeThree",
+    "dimensions": {
+    },
+    "properties": {
+      "dpTwo": 3
+    }
+  },
+  "3a74c3c5-4eb8-4549-817e-c06eeaa4b600":   {
+    "meta": "http://onto-ns.com/meta/0.1/Collection",
+    "dimensions": {
+      "nrelations": 15
+    },
+    "properties": {
+      "relations": [["58dc4f5e-d6a6-4c12-8fda-32c56c07acc2", "_is-a", "Instance"], ["58dc4f5e-d6a6-4c12-8fda-32c56c07acc2", "_has-uuid", "58dc4f5e-d6a6-4c12-8fda-32c56c07acc2"], ["58dc4f5e-d6a6-4c12-8fda-32c56c07acc2", "_has-meta", "http://onto-ns.com/meta/0.1/TypeThree"], ["3919ea39-4c00-44f6-a8d2-affc09a78111", "_is-a", "Instance"], ["3919ea39-4c00-44f6-a8d2-affc09a78111", "_has-uuid", "3919ea39-4c00-44f6-a8d2-affc09a78111"], ["3919ea39-4c00-44f6-a8d2-affc09a78111", "_has-meta", "http://onto-ns.com/meta/0.1/TypeTwo"], ["3919ea39-4c00-44f6-a8d2-affc09a78111", "http://www.osp-core.com/ex#opTwo", "a67ea05c-0134-497e-bbf5-db5a7050d126"], ["a67ea05c-0134-497e-bbf5-db5a7050d126", "_is-a", "Instance"], ["a67ea05c-0134-497e-bbf5-db5a7050d126", "_has-uuid", "a67ea05c-0134-497e-bbf5-db5a7050d126"], ["a67ea05c-0134-497e-bbf5-db5a7050d126", "_has-meta", "http://onto-ns.com/meta/0.1/TypeTwo"], ["6ce00d67-46dc-404f-901b-41d17ba7b0a0", "_is-a", "Instance"], ["6ce00d67-46dc-404f-901b-41d17ba7b0a0", "_has-uuid", "6ce00d67-46dc-404f-901b-41d17ba7b0a0"], ["6ce00d67-46dc-404f-901b-41d17ba7b0a0", "_has-meta", "http://onto-ns.com/meta/0.1/TypeOne"], ["6ce00d67-46dc-404f-901b-41d17ba7b0a0", "http://www.osp-core.com/ex#opOne", "3919ea39-4c00-44f6-a8d2-affc09a78111"], ["6ce00d67-46dc-404f-901b-41d17ba7b0a0", "http://www.osp-core.com/ex#opTwo", "58dc4f5e-d6a6-4c12-8fda-32c56c07acc2"]]
+    }
+  },
+  "a67ea05c-0134-497e-bbf5-db5a7050d126":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeTwo",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "g",
+      "dpTwo": 4,
+      "dpThree": 8.9
+    }
+  },
+  "3919ea39-4c00-44f6-a8d2-affc09a78111":   {
+    "meta": "http://onto-ns.com/meta/0.1/TypeTwo",
+    "dimensions": {
+    },
+    "properties": {
+      "dpOne": "b",
+      "dpTwo": 5,
+      "dpThree": 2.5
+    }
+  }
+}
