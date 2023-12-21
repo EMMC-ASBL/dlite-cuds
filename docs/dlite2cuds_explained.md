@@ -25,7 +25,7 @@ We assume that there is no previously existing instance with that uuid.
 ### Initialization
 
 The CUDS instance is created directly with the values.
-The initialization of the values not specified in the dictionary of properties is according to Simphony rule: ?? 
+The initialization of the values not specified in the dictionary of properties is according to Simphony rule: ??
 
 ### Mapping
 
@@ -47,7 +47,7 @@ Matching type test or conversion is not implemented.
 
 The relations connecting the current cuds instance is subject of is copied as a triple of string into a collection of relations.
 
-The stored relations are recovered using cuds_instance.relationships_iter which return all the relations ?? 
+The stored relations are recovered using cuds_instance.relationships_iter which return all the relations ??
 
 ### Entity creation
 
@@ -55,4 +55,3 @@ The creation of the entity is based on the same principle with the extraction of
 The label is taken from the data poperty label (skos:prefLabel).
 The type is fetch from the data property description.
 The unit and description are empty as it is usually not defined (according to the available examples).
-
