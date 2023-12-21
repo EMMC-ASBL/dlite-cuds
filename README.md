@@ -6,7 +6,7 @@ The implementations has some severe restrictions for now:
 
 * An individual can only be an rdf:type of one class (i.e. it cannot be for instance both an rdf:type :Human and rdf:type Mother)
 
-* All individuals of the same type must have the exact same properties defined.
+* All individuals of the same type must have the exact same properties defined. Incomplete individuals are not accepted (i.e. missing a property)
 
 Restrictions on Dlite Models etc:
 
