@@ -19,7 +19,7 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
 
     # Install the ontology if not already done
     install(repo_dir / "tests" / "ontologies" / "example_sim.ttl.yml")
-
+    core_session.clear(force=True)
     # import the cuds into the simphony ession
     try:
         import_file(
@@ -32,7 +32,9 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
         pass
     # The dlite collection into which the enitites should be added
 
-    dlite.storage_path.append(repo_dir / "tests" / "inputfiles_dlite2cuds" / "entities")
+    dlite.storage_path.append(
+        repo_dir / "tests" / "inputfiles_dlite2cuds" / "entities" / "TypeOne_v2.json"
+    )
     mapping_iri = "http://emmo.info/domain-mappings#mapsTo"
     # check the warning is raised when the entity already exists
     with pytest.warns(DLiteCUDSWarning) as record:
@@ -49,13 +51,18 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
         )
 
     assert entity.uri == "http://onto-ns.com/meta/0.2/TypeOne"
-    assert entity.description == ""  # Entity in repo has no description
+    assert entity.description == "Previously created entity"
     entitydict = entity.asdict()
     assert set(entitydict["properties"].keys()) == {"dpOne", "dpTwo"}
     assert entitydict["properties"]["dpOne"]["type"] == "string"
     assert entitydict["properties"]["dpTwo"]["type"] == "int64"
     # Check that collection with mappings is made even though entity already exists
     assert set(collection.get_relations(p=mapping_iri)) == {
+        (
+            "http://onto-ns.com/meta/0.2/TypeOne",
+            "http://emmo.info/domain-mappings#mapsTo",
+            "http://www.osp-core.com/ex#TypeOne",
+        ),
         (
             "http://onto-ns.com/meta/0.2/TypeOne#dpOne",
             "http://emmo.info/domain-mappings#mapsTo",

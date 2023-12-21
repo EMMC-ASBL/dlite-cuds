@@ -32,12 +32,13 @@ def dlite2cuds(  # pylint: disable=too-many-arguments, too-many-locals
             f"Instance {instance} is mapped {len(instance_mapping)} objects. Currently"
             "only one mapping is supported."
         )
-
+    print(instance_mapping)
     cuds_class = ontology.from_iri(instance_mapping[0])
+    print(cuds_class)
     # Not that this only works if there is exavet match in properties
     # between the cuds class and the DLite entity (of the instance).
     class_attributes = {str(attrkey.iri) for attrkey in cuds_class.attributes.keys()}
-
+    print(class_attributes)
     property_dictionary = {}
     for inst_prop in instance.properties:
         # Check all concepts the property is mapped to
@@ -54,7 +55,9 @@ def dlite2cuds(  # pylint: disable=too-many-arguments, too-many-locals
                 property_dictionary[cuds_prop] = instance.properties[inst_prop]
 
     cuds = cuds_class(
-        **property_dictionary, iri="https://www.simphony-osp.eu/entity#" + instance.uuid
+        **property_dictionary,
+        iri="https://www.simphony-osp.eu/entity#" + instance.uuid,
+        session=simphony_session,
     )
     if relations:
         dlite2cuds_add_relations(

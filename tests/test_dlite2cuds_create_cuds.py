@@ -101,7 +101,6 @@ def test_dlite2cuds_create_cuds(repo_dir):
     assert cuds3.dpTwo == 3
 
     # export_file(core_session, file="generated_file.ttl")
-
     cuds1 = dlite2cuds(
         simphony_session=core_session,
         ontology=ex,

@@ -15,6 +15,7 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
 
     from dlite_cuds.cuds2dlite import create_entity_and_mappings
 
+    core_session.clear(force=True)
     # Install the ontology if not already done
     install(repo_dir / "tests" / "ontologies" / "example_sim.ttl.yml")
 
@@ -47,6 +48,11 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
 
     assert set(collection.get_relations(p=mapping_iri)) == {
         (
+            "http://onto-ns.com/meta/0.1/TypeOne",
+            "http://emmo.info/domain-mappings#mapsTo",
+            "http://www.osp-core.com/ex#TypeOne",
+        ),
+        (
             "http://onto-ns.com/meta/0.1/TypeOne#dpOne",
             "http://emmo.info/domain-mappings#mapsTo",
             "http://www.osp-core.com/ex#dpOne",
@@ -73,6 +79,11 @@ def test_cuds2dlite_simphony_create_entity(repo_dir):
     assert entitydict["properties"]["dpThree"]["type"] == "float64"
 
     assert set(collection.get_relations(p=mapping_iri)) == {
+        (
+            "http://onto-ns.com/meta/0.1/TypeTwo",
+            "http://emmo.info/domain-mappings#mapsTo",
+            "http://www.osp-core.com/ex#TypeTwo",
+        ),
         (
             "http://onto-ns.com/meta/0.1/TypeTwo#dpOne",
             "http://emmo.info/domain-mappings#mapsTo",

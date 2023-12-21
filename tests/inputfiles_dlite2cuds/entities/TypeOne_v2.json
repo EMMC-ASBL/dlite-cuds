@@ -1,6 +1,6 @@
 {
   "uri": "http://onto-ns.com/meta/0.2/TypeOne",
-  "description": "",
+  "description": "Previously created entity",
   "dimensions": {},
   "properties": {
     "dpOne": {
