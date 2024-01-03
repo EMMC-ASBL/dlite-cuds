@@ -1,0 +1,7 @@
+identifier: ex
+ontology_file: example_sim.ttl
+format: "text/turtle"
+requirements:
+  - emmo
+namespaces:
+  ex: http://www.osp-core.com/ex

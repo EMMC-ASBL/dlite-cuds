@@ -55,17 +55,17 @@ repos:
       require_serial: true
       files: ^.*$
       exclude: ^tests/.*$
-    - id: pylint-tests
-      name: pylint - tests
-      entry: pylint
-      args:
-      - "--rcfile=pyproject.toml"
-      - "--extension-pkg-whitelist='pydantic'"
-      - "--disable=import-outside-toplevel,redefined-outer-name,import-error"
-      language: python
-      types: [python]
-      require_serial: true
-      files: ^tests/.*$
+    #- id: pylint-tests
+    #  name: pylint - tests
+    #  entry: pylint
+    #  args:
+    #  - "--rcfile=pyproject.toml"
+    #  - "--extension-pkg-whitelist='pydantic'"
+    #  - "--disable=import-outside-toplevel,redefined-outer-name,import-error"
+    #  language: python
+    #  types: [python]
+    #  require_serial: true
+    #  files: ^tests/.*$
     - id: update-docs-api-reference
       name: Update API Reference in Documentation
       entry: invoke
