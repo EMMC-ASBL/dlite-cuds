@@ -1,0 +1,5 @@
+identifier: mods
+ontology_file: mods.ttl
+format: "text/turtle"
+namespaces:
+  mods: http://www.osp-core.com/mods#
