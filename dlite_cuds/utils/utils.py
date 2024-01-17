@@ -19,8 +19,8 @@ def datatype_cuds2dlite(datatype):
         return "string"
     if dtype == "http://www.w3.org/2001/XMLSchema#integer":
         return "int64"
-    # if datatype == "bool":
-    #    return "bool"
+    if dtype == "http://www.w3.org/2001/XMLSchema#boolean":
+        return "bool"
     # if datatype == "datetime":
     #    return "datetime"
     # if datatype == "quantity":
