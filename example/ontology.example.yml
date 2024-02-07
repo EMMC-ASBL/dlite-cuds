@@ -1,0 +1,67 @@
+---
+version: "0.0.1"
+namespace: "ex"
+author: "CMCL Innovations"
+
+ontology:
+  ################ RELATIONSHIPS  ################
+  opOne:
+    default_rel: true
+    description: "default relationship"
+    inverse: ex.iOPOne
+    subclass_of:
+      - cuba.activeRelationship
+
+  iOPOne:
+    description: "inverse of the default relationship"
+    inverse: ex.opOne
+    subclass_of:
+      - cuba.passiveRelationship
+
+  opTwo:
+    description: "second object property"
+    subclass_of:
+      - cuba.activeRelationship
+
+  iOPTwo:
+    description: "inverse of second object property"
+    inverse: ex.opTwo
+    subclass_of:
+      - cuba.passiveRelationship
+
+  ################ MAIN ENTITIES ################
+  #================================================#
+  TypeOne:
+    subclass_of:
+      - cuba.Entity
+    attributes:
+      ex.dpOne:
+      ex.dpTwo:
+
+  TypeTwo:
+    subclass_of:
+      - cuba.Entity
+      - ex.TypeOne
+    attributes:
+      ex.dpThree:
+
+  TypeThree:
+    subclass_of:
+      - cuba.Entity
+    attributes:
+      ex.dpTwo:
+
+  dpOne:
+    subclass_of:
+      - cuba.attribute
+    datatype: STRING
+
+  dpTwo:
+    subclass_of:
+      - cuba.attribute
+    datatype: INT
+
+  dpThree:
+    subclass_of:
+      - cuba.attribute
+    datatype: FLOAT
