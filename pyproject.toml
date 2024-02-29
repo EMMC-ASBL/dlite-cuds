@@ -27,10 +27,9 @@ requires-python = "~=3.9"
 dynamic = ["version"]
 
 dependencies = [
-    "Dlite-Python",
+    "Dlite-Python>=0.4.5,<0.6",
     "simphony-osp ~=4.0",
-    "oteapi-core ==0.5.2",
-    "tripper ~=0.2.13",
+    "tripper>=0.2.0,<0.3"
 ]
 
 [project.optional-dependencies]

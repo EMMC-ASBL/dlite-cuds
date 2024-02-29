@@ -60,7 +60,7 @@ def test_cuds2dlite_simphony_create_instances(repo_dir):
     assert labels == ["6ce00d67-46dc-404f-901b-41d17ba7b0a0"]
     # Check that only the one instance is present
     coll.get("6ce00d67-46dc-404f-901b-41d17ba7b0a0")
-    with pytest.raises(dlite.DLiteUnknownError):
+    with pytest.raises(dlite.DLiteValueError):
         coll.get("3919ea39-4c00-44f6-a8d2-affc09a78111")
 
     # Check that the relations are still correct.
