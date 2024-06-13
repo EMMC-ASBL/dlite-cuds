@@ -1,0 +1,73 @@
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ns2: <http://www.osp-core.com/cuba#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.osp-core.com/ex#> ns2:_default_rel <http://www.osp-core.com/ex#opOne> .
+
+<http://www.osp-core.com/ex#TypeThree> a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality 1 ;
+            owl:onProperty <http://www.osp-core.com/ex#dpTwo> ],
+        ns2:Entity ;
+    ns1:prefLabel "TypeThree"@en .
+
+<http://www.osp-core.com/ex#TypeTwo> a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality 1 ;
+            owl:onProperty <http://www.osp-core.com/ex#dpThree> ],
+        ns2:Entity,
+        <http://www.osp-core.com/ex#TypeOne> ;
+    ns1:prefLabel "TypeTwo"@en .
+
+<http://www.osp-core.com/ex#iOPTwo> a owl:ObjectProperty ;
+    rdfs:isDefinedBy "inverse of second object property"@en ;
+    rdfs:subPropertyOf ns2:passiveRelationship ;
+    owl:inverseOf <http://www.osp-core.com/ex#opTwo> ;
+    ns1:prefLabel "iOPTwo"@en .
+
+<http://www.osp-core.com/ex#TypeOne> a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality 1 ;
+            owl:onProperty <http://www.osp-core.com/ex#dpOne> ],
+        [ a owl:Restriction ;
+            owl:cardinality 1 ;
+            owl:onProperty <http://www.osp-core.com/ex#dpTwo> ],
+        ns2:Entity ;
+    ns1:prefLabel "TypeOne"@en .
+
+<http://www.osp-core.com/ex#dpOne> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf ns2:attribute ;
+    ns1:prefLabel "dpOne"@en .
+
+<http://www.osp-core.com/ex#dpThree> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:range xsd:float ;
+    rdfs:subPropertyOf ns2:attribute ;
+    ns1:prefLabel "dpThree"@en .
+
+<http://www.osp-core.com/ex#iOPOne> a owl:ObjectProperty ;
+    rdfs:isDefinedBy "inverse of the default relationship"@en ;
+    rdfs:subPropertyOf ns2:passiveRelationship ;
+    owl:inverseOf <http://www.osp-core.com/ex#opOne> ;
+    ns1:prefLabel "iOPOne"@en .
+
+<http://www.osp-core.com/ex#opTwo> a owl:ObjectProperty ;
+    rdfs:isDefinedBy "second object property"@en ;
+    rdfs:subPropertyOf ns2:activeRelationship ;
+    ns1:prefLabel "opTwo"@en .
+
+<http://www.osp-core.com/ex#dpTwo> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:subPropertyOf ns2:attribute ;
+    ns1:prefLabel "dpTwo"@en .
+
+<http://www.osp-core.com/ex#opOne> a owl:ObjectProperty ;
+    rdfs:isDefinedBy "default relationship"@en ;
+    rdfs:subPropertyOf ns2:activeRelationship ;
+    owl:inverseOf <http://www.osp-core.com/ex#iOPOne> ;
+    ns1:prefLabel "opOne"@en .
