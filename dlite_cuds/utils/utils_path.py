@@ -1,4 +1,5 @@
 """ Function to manipulate path"""
+
 import os
 import urllib.parse
 
