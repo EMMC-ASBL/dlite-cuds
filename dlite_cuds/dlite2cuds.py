@@ -1,4 +1,5 @@
 """Generates an example ABox"""
+
 # from osp.core.namespaces import ex
 from typing import Optional
 
