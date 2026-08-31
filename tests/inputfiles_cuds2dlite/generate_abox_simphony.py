@@ -1,4 +1,5 @@
 """Generates an example ABox"""
+
 # from osp.core.namespaces import ex
 from pathlib import Path
 
