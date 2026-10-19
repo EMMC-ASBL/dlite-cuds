@@ -1,5 +1,4 @@
-"""Some generic utility functions.
-"""
+"""Some generic utility functions."""
 
 
 class DLiteCUDSError(Exception):
